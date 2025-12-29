@@ -11,8 +11,8 @@ const certificatesData = [
     },
     {
         id: 3,
-        title: "TensorFlow Developer Certificate",
-        image: "images/certificates/tensorflow.jpg"
+        title: "MATLAB Onramp",
+        image: "images/certificates/onramp.jpg"
     },
     {
         id: 4,
