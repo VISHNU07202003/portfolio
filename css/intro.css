@@ -33,127 +33,33 @@
     position: relative;
 }
 
-/* V Animation */
+/* Fast and Simple V Animation */
 .intro-v {
-    animation: netflixV 3s cubic-bezier(0.87, 0, 0.13, 1) forwards;
+    animation: fastFadeIn 0.4s ease-out forwards;
 }
 
-/* S Animation */
+/* Fast and Simple S Animation */
 .intro-s {
-    animation: netflixS 3s cubic-bezier(0.87, 0, 0.13, 1) 0.3s forwards;
+    animation: fastFadeIn 0.4s ease-out 0.2s forwards;
 }
 
-@keyframes netflixV {
+@keyframes fastFadeIn {
     0% {
         opacity: 0;
-        transform: scale(0.5) translateY(100px);
-    }
-    20% {
-        opacity: 1;
-        transform: scale(1.2) translateY(0);
-    }
-    40% {
-        transform: scale(1) translateY(0);
-    }
-    70% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-    85% {
-        opacity: 1;
-        transform: scale(1.1) translateY(-20px);
+        transform: scale(0.8);
     }
     100% {
-        opacity: 0;
-        transform: scale(0) translateY(-200px) rotate(180deg);
-        filter: blur(20px);
-    }
-}
-
-@keyframes netflixS {
-    0% {
-        opacity: 0;
-        transform: scale(0.5) translateY(100px);
-    }
-    20% {
         opacity: 1;
-        transform: scale(1.2) translateY(0);
-    }
-    40% {
-        transform: scale(1) translateY(0);
-    }
-    70% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-    }
-    85% {
-        opacity: 1;
-        transform: scale(1.1) translateY(-20px);
-    }
-    100% {
-        opacity: 0;
-        transform: scale(0) translateY(-200px) rotate(-180deg);
-        filter: blur(20px);
+        transform: scale(1);
     }
 }
 
-/* Glow effect */
-.intro-v::before,
-.intro-s::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
-    animation: glow 2s ease-in-out infinite;
-    z-index: -1;
-}
-
-@keyframes glow {
-    0%, 100% {
-        opacity: 0.5;
-        transform: translate(-50%, -50%) scale(1);
-    }
-    50% {
-        opacity: 0.8;
-        transform: translate(-50%, -50%) scale(1.2);
-    }
-}
-
-/* Sound wave effect */
-.intro-vs::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 150%;
-    height: 150%;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    animation: soundwave 1.5s ease-out 1s infinite;
-}
-
-@keyframes soundwave {
-    0% {
-        transform: translate(-50%, -50%) scale(0.8);
-        opacity: 1;
-    }
-    100% {
-        transform: translate(-50%, -50%) scale(2);
-        opacity: 0;
-    }
-}
-
-/* Fade out entire intro */
+/* Fade out entire intro quickly */
 .intro-page {
-    animation: introFadeOut 0.5s ease-out 3.5s forwards;
+    animation: quickFadeOut 0.3s ease-out 1.5s forwards;
 }
 
-@keyframes introFadeOut {
+@keyframes quickFadeOut {
     to {
         opacity: 0;
         visibility: hidden;
