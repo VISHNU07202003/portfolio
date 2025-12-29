@@ -11,7 +11,9 @@ function renderContactPage() {
         <a href="${contact.url}" 
            ${contact.url.startsWith('http') ? 'target="_blank" rel="noopener noreferrer"' : ''} 
            class="contact-item">
-            <div class="contact-icon">${contact.icon}</div>
+            <div class="contact-icon">
+                <span>${contact.icon}</span>
+            </div>
             <span class="contact-label">${contact.name}</span>
         </a>
     `).join('');
