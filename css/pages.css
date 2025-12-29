@@ -222,6 +222,7 @@
     text-decoration: none;
     color: black;
     transition: transform 0.3s ease;
+    cursor: pointer;
 }
 
 .contact-item:hover {
@@ -238,11 +239,20 @@
     justify-content: center;
     transition: all 0.3s;
     font-size: 2.5rem;
+    background: white;
 }
 
 .contact-item:hover .contact-icon {
     background: black;
-    transform: scale(1.1);
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+.contact-icon span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: filter 0.3s;
 }
 
 .contact-item:hover .contact-icon span {
@@ -252,6 +262,11 @@
 .contact-label {
     font-size: 0.875rem;
     font-weight: 500;
+    transition: color 0.3s;
+}
+
+.contact-item:hover .contact-label {
+    color: #333;
 }
 
 /* Responsive */
