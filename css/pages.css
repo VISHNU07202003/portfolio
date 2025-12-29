@@ -14,7 +14,7 @@
 
 /* Home Page */
 .home-container {
-    min-h-screen;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -23,18 +23,11 @@
     padding: 2rem;
 }
 
-.home-title {
-    font-size: 5rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    letter-spacing: -0.02em;
-}
-
 .home-tagline {
     font-size: 1.5rem;
     color: #666;
     max-width: 48rem;
-    margin-bottom: 3rem;
+    margin: 0 auto 3rem;
     line-height: 1.6;
 }
 
@@ -42,6 +35,8 @@
     display: flex;
     gap: 1.5rem;
     margin-top: 2rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .btn {
@@ -60,6 +55,8 @@
 
 .btn-primary:hover {
     background: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 .btn-secondary {
@@ -71,6 +68,8 @@
 .btn-secondary:hover {
     background: black;
     color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
 /* About Page */
@@ -248,15 +247,8 @@
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
-.contact-icon span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: filter 0.3s;
-}
-
-.contact-item:hover .contact-icon span {
-    filter: invert(1) brightness(2);
+.contact-item:hover .contact-icon {
+    filter: invert(1);
 }
 
 .contact-label {
@@ -271,10 +263,6 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-    .home-title {
-        font-size: 2.5rem;
-    }
-
     .home-tagline {
         font-size: 1.125rem;
     }
