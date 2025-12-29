@@ -1,1 +1,274 @@
+/* Common Page Styles */
+.content-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 8rem 2rem 5rem;
+}
 
+.page-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+/* Home Page */
+.home-container {
+    min-h-screen;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 2rem;
+}
+
+.home-title {
+    font-size: 5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.02em;
+}
+
+.home-tagline {
+    font-size: 1.5rem;
+    color: #666;
+    max-width: 48rem;
+    margin-bottom: 3rem;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: black;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #333;
+}
+
+.btn-secondary {
+    background: white;
+    color: black;
+    border: 2px solid black;
+}
+
+.btn-secondary:hover {
+    background: black;
+    color: white;
+}
+
+/* About Page */
+.about-content {
+    max-width: 56rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.profile-pic {
+    width: 16rem;
+    height: 16rem;
+    background: #e5e5e5;
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.profile-pic img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.about-intro {
+    font-size: 1.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.about-subtitle {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 3rem;
+}
+
+.about-bio {
+    text-align: left;
+    line-height: 1.8;
+    color: #333;
+}
+
+.about-bio p {
+    margin-bottom: 1rem;
+    font-size: 1.125rem;
+}
+
+/* Projects Page */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.project-card {
+    cursor: pointer;
+}
+
+.project-image {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #f5f5f5;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.1);
+}
+
+.project-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.project-card:hover .project-title {
+    text-decoration: underline;
+}
+
+.project-description {
+    color: #666;
+}
+
+/* Certificates Page */
+.certificates-container {
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.cert-item {
+    margin-bottom: 3rem;
+}
+
+.cert-image {
+    width: 100%;
+    background: #f5f5f5;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.cert-image img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s;
+}
+
+.cert-item:hover .cert-image img {
+    transform: scale(1.05);
+}
+
+.cert-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Contact Page */
+.contact-content {
+    max-width: 56rem;
+    margin: 0 auto;
+}
+
+.contact-icons {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: black;
+}
+
+.contact-icon {
+    width: 5rem;
+    height: 5rem;
+    border: 2px solid black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 2.5rem;
+}
+
+.contact-item:hover .contact-icon {
+    background: black;
+}
+
+.contact-item:hover .contact-icon {
+    filter: invert(1);
+}
+
+.contact-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .home-title {
+        font-size: 2.5rem;
+    }
+
+    .home-tagline {
+        font-size: 1.125rem;
+    }
+
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+    }
+    
+    .page-title {
+        font-size: 2rem;
+    }
+}
