@@ -16,13 +16,24 @@
 </head>
 <body>
     <!-- Intro Screen -->
-    <!-- Intro Screen -->
-<div id="intro" class="intro-page">
+    <div id="intro" class="intro-page">
     <h1 class="intro-text">VISHNU SAI PADYALA</h1>
 </div>
 
     <!-- Navigation -->
-    <nav id="mainNav" style="display: none;"></nav>
+    <nav id="mainNav">
+        <div class="nav-container">
+            <div class="nav-left">
+                <button class="nav-btn" data-page="about">About</button>
+                <button class="nav-btn" data-page="contact">Contact</button>
+            </div>
+            <div class="logo" data-page="home">VISHNU</div>
+            <div class="nav-right">
+                <button class="nav-btn" data-page="projects">Projects</button>
+                <button class="nav-btn" data-page="certificates">Certificates</button>
+            </div>
+        </div>
+    </nav>
 
     <!-- Main Content Container -->
     <div id="app"></div>
