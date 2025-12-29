@@ -1,7 +1,6 @@
 function renderHomePage() {
     return `
         <div class="home-container">
-            <h1 class="home-title">VISHNU SAI PADYALA</h1>
             <p class="home-tagline">
                 A creative mind building clean, functional digital experiences.
             </p>
