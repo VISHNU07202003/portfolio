@@ -7,14 +7,26 @@ nav {
     border-bottom: 1px solid #e5e5e5;
     z-index: 1000;
     padding: 1rem 2rem;
+    display: none;
+}
+
+nav.show {
+    display: block;
 }
 
 .nav-container {
     max-width: 1280px;
     margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
+    gap: 2rem;
+}
+
+.nav-left {
+    display: flex;
+    gap: 2rem;
+    justify-content: flex-start;
 }
 
 .logo {
@@ -23,18 +35,20 @@ nav {
     letter-spacing: -0.02em;
     cursor: pointer;
     transition: opacity 0.3s;
+    text-align: center;
 }
 
 .logo:hover {
     opacity: 0.7;
 }
 
-.nav-links {
+.nav-right {
     display: flex;
     gap: 2rem;
+    justify-content: flex-end;
 }
 
-.nav-links button {
+.nav-btn {
     background: none;
     border: none;
     font-size: 0.875rem;
@@ -48,18 +62,30 @@ nav {
     transition: all 0.3s;
 }
 
-.nav-links button:hover,
-.nav-links button.active {
+.nav-btn:hover,
+.nav-btn.active {
     color: black;
     border-bottom-color: black;
 }
 
 @media (max-width: 768px) {
-    .nav-links {
+    .nav-container {
+        grid-template-columns: 1fr;
         gap: 1rem;
     }
     
-    .nav-links button {
+    .logo {
+        order: -1;
+        margin-bottom: 0.5rem;
+    }
+    
+    .nav-left,
+    .nav-right {
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .nav-btn {
         font-size: 0.75rem;
     }
 }
