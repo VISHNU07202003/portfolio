@@ -207,17 +207,25 @@
 .contact-icons {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 3rem;
     flex-wrap: wrap;
+    padding: 2rem 0;
 }
 
 .contact-item {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 0.75rem;
     text-decoration: none;
     color: black;
+    transition: transform 0.3s ease;
+}
+
+.contact-item:hover {
+    transform: translateY(-5px);
 }
 
 .contact-icon {
@@ -234,10 +242,11 @@
 
 .contact-item:hover .contact-icon {
     background: black;
+    transform: scale(1.1);
 }
 
-.contact-item:hover .contact-icon {
-    filter: invert(1);
+.contact-item:hover .contact-icon span {
+    filter: invert(1) brightness(2);
 }
 
 .contact-label {
@@ -270,5 +279,9 @@
     
     .page-title {
         font-size: 2rem;
+    }
+    
+    .contact-icons {
+        gap: 2rem;
     }
 }
