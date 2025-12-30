@@ -15,9 +15,32 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
-    <!-- Intro Screen -->
-    <div id="intro" class="intro-page">
-    <h1 class="intro-text">VISHNU SAI PADYALA</h1>
+    <!-- Intro Screen - Dino Runner -->
+<div id="intro" class="dino-intro">
+    <div class="dino-container">
+        <!-- Ground line -->
+        <div class="ground"></div>
+        
+        <!-- Dino sprite -->
+        <div class="dino">
+            <div class="dino-body"></div>
+            <div class="dino-leg-left"></div>
+            <div class="dino-leg-right"></div>
+        </div>
+        
+        <!-- Dust particles -->
+        <div class="dust dust-1"></div>
+        <div class="dust dust-2"></div>
+        
+        <!-- Text that appears -->
+        <div class="welcome-text" style="display: none;">
+            <span class="typewriter"></span>
+            <span class="cursor">|</span>
+        </div>
+    </div>
+    
+    <!-- Skip button -->
+    <button class="skip-btn" onclick="skipIntro()">SKIP &gt;&gt;</button>
 </div>
 
     <!-- Navigation -->
