@@ -36,23 +36,23 @@ function navigateTo(page) {
     }
 }
 
-// Typewriter effect
-function typeWriter(text, element, speed = 100) {
-    let i = 0;
-    element.textContent = '';
+// Letter-by-letter trail effect (text appears as dino passes)
+function letterTrailEffect(text, element, startDelay = 0) {
+    const letters = text.split('');
+    element.innerHTML = letters.map(letter => 
+        `<span>${letter === ' ' ? '&nbsp;' : letter}</span>`
+    ).join('');
     
-    return new Promise((resolve) => {
-        function type() {
-            if (i < text.length) {
-                element.textContent += text.charAt(i);
-                i++;
-                setTimeout(type, speed);
-            } else {
-                resolve();
-            }
-        }
-        type();
+    const spans = element.querySelectorAll('span');
+    const letterDelay = 100; // milliseconds between each letter
+    
+    spans.forEach((span, index) => {
+        setTimeout(() => {
+            span.classList.add('show');
+        }, startDelay + (index * letterDelay));
     });
+    
+    return startDelay + (letters.length * letterDelay);
 }
 
 // Skip intro function
@@ -72,19 +72,17 @@ function skipIntro() {
 
 // Dino intro animation sequence
 async function runDinoIntro() {
-    const intro = document.getElementById('intro');
     const welcomeText = document.querySelector('.welcome-text');
     const typewriterEl = document.querySelector('.typewriter');
     
-    // Wait for dino to run to center (3 seconds)
-    await new Promise(resolve => setTimeout(resolve, 3000));
-    
-    // Show and type welcome text
+    // Show text container immediately but letters hidden
     welcomeText.style.display = 'block';
-    await typeWriter('WELCOME TO MY WORKSPACE', typewriterEl, 80);
     
-    // Wait 1.5 seconds after text completes
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    // Start revealing letters after 500ms delay (dino starts running)
+    const totalTextTime = letterTrailEffect('WELCOME TO MY WORKSPACE', typewriterEl, 500);
+    
+    // Wait for all letters to appear + 1 second pause
+    await new Promise(resolve => setTimeout(resolve, totalTextTime + 1000));
     
     // Fade out and show main content
     if (!introCompleted) {
