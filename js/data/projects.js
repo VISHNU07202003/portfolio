@@ -22,7 +22,7 @@ const projectsData = [
     },
     {
         id: 4,
-        title: "University Service App",
+        title: "ECG ARRHYTHMIA CLASSIFICATION USING LSTM-BASED AUTO-ENCODER",
         description: "Cross-platform app for 5000+ students",
         image: "images/projects/university-app.jpg",
         github: "https://github.com/VISHNU07202003"
