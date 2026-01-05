@@ -3,7 +3,7 @@ const projectsData = [
         id: 1,
         title: "Federated Learning System",
         description: "Privacy-preserving ML across 10k+ clients",
-        image: "images/projects/federated-learning.jpeg",
+        image: "images/projects/federated-learning.jpg",
         github: "https://github.com/VISHNU07202003"
     },
     {
@@ -17,7 +17,7 @@ const projectsData = [
         id: 3,
         title: "Yelp Data Analysis",
         description: "ML regression on 8M+ reviews",
-        image: "images/projects/yelp-analysis.jpeg",
+        image: "images/projects/yelp-analysis.jpg",
         github: "https://github.com/VISHNU07202003"
     },
     {
@@ -31,7 +31,7 @@ const projectsData = [
         id: 5,
         title: "Snack Squad E-commerce",
         description: "Firebase-powered Android shopping app",
-        image: "images/projects/snack-squad.jpeg",
+        image: "images/projects/snack-squad.jpg",
         github: "https://github.com/VISHNU07202003"
     },
     {
