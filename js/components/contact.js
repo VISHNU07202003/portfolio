@@ -16,7 +16,7 @@ function renderContactPage() {
                         <div class="contact-icon">📧</div>
                         <span class="contact-label">Email</span>
                     </a>
-                    <a href="tel:+1234567890" class="contact-item">
+                    <a href="tel:+8134516587" class="contact-item">
                         <div class="contact-icon">📱</div>
                         <span class="contact-label">Phone</span>
                     </a>
