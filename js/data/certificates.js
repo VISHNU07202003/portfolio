@@ -13,20 +13,5 @@ const certificatesData = [
         id: 3,
         title: "MATLAB Onramp",
         image: "images/certificates/onramp.jpg"
-    },
-    {
-        id: 4,
-        title: "Deep Learning Specialization",
-        image: "images/certificates/deep-learning.jpg"
-    },
-    {
-        id: 5,
-        title: "AWS Solutions Architect",
-        image: "images/certificates/aws-solutions.jpg"
-    },
-    {
-        id: 6,
-        title: "Data Structures & Algorithms",
-        image: "images/certificates/dsa.jpg"
     }
 ];
