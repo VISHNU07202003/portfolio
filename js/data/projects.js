@@ -31,7 +31,7 @@ const projectsData = [
         id: 5,
         title: "Snack Squad E-commerce",
         description: "Firebase-powered Android shopping app",
-        image: "images/projects/snack-squad.jpg",
+        image: "images/projects/snack-squad.jpeg",
         github: "https://github.com/VISHNU07202003"
     },
     {
