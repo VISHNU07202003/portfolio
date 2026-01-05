@@ -3,7 +3,7 @@ const projectsData = [
         id: 1,
         title: "Federated Learning System",
         description: "Privacy-preserving ML across 10k+ clients",
-        image: "images/projects/federated-learning.jpg",
+        image: "images/projects/federated-learning.jpeg",
         github: "https://github.com/VISHNU07202003"
     },
     {
@@ -17,7 +17,7 @@ const projectsData = [
         id: 3,
         title: "Yelp Data Analysis",
         description: "ML regression on 8M+ reviews",
-        image: "images/projects/yelp-analysis.jpg",
+        image: "images/projects/yelp-analysis.jpeg",
         github: "https://github.com/VISHNU07202003"
     },
     {
