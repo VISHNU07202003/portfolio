@@ -40,5 +40,12 @@ const projectsData = [
         description: "Mask R-CNN & DETR on Mini COCO dataset",
         image: "images/projects/object-detection.jpg",
         github: "https://iosrjen.org/Papers/vol15_issue1/A15010109.pdf"
+    },
+    {
+        id: 7,
+        title: "COVID-19 Global Trends Visualization Platform",
+        description: "An interactive web-based data visualization dashboard",
+        image: "images/projects/covid-19.jpg",
+        github: "https://vishnu07202003.github.io/COVID-19-Data-Visualization/"
     }
 ];
