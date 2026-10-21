@@ -249,7 +249,27 @@ body:has(.story-sequence)>.site-header,body:has(.story-sequence) #root>.site-hea
  .hero .split-word{font-size:clamp(40px,8.5cqw,154px);letter-spacing:-.025em}
  .hero .split-word.left{justify-self:end}
  .hero .split-word.right{justify-self:start}
- .hero .portrait-wrap{width:min(35%,calc((100svh - 270px)*.78),507px);height:auto;aspect-ratio:.78;max-height:none;left:50%;top:auto;bottom:0;transform:translateX(-50%)}
+ .hero .portrait-wrap{width:min(35%,calc((100svh - 270px)*.78),507px);height:auto;aspect-ratio:.78;max-height:none;left:0;right:0;margin:auto;top:0;bottom:0;transform:none}
+}
+
+/* Layout owns centering; GSAP owns transforms. Keep the source crop proportional
+   to the portrait box instead of changing its focal point at zoom breakpoints. */
+.hero .portrait-wrap img{width:132%;left:-16%;top:-41%}
+@media(max-width:700px){
+ .hero .portrait-wrap{width:min(54%,calc((100svh - 290px)*.78));height:auto;aspect-ratio:.78;max-height:none;left:0;right:0;margin:auto;top:0;bottom:0;transform:none}
+}
+@media(min-width:900px) and (max-height:599px){
+ .has-cinematic-stage .experience-pin{padding-top:18px;padding-bottom:12px}
+ .experience-pin .section-heading{margin-bottom:12px}
+ .experience-pin .chapter-meta{font-size:9px;gap:6px}
+ .experience-pin .experience-copy h3{font-size:28px;margin:10px 0}
+ .experience-pin .experience-copy>p{font-size:12px;line-height:1.5}
+ .experience-pin .tags{margin:10px 0;gap:5px}
+ .experience-pin .tags span{font-size:9px;padding:5px 7px}
+ .experience-pin .text-link{font-size:11px}
+ .has-cinematic-stage .experience-stage-footer{margin-top:8px;padding-top:6px;gap:12px}
+ .experience-stage-controls{gap:16px}
+ .experience-reading-button,.experience-skip,.experience-chapter-button{font-size:10px}
 }
 
 .github-snapshot-label{font-size:10px;color:var(--muted);white-space:nowrap}@media(max-width:700px){.github-snapshot-label{display:block;margin-top:18px}}

@@ -28,7 +28,7 @@ export default function Experience() {
     if (!root || stories.length < 2 || reading) return;
     const media = gsap.matchMedia();
     const context = gsap.context(() => {
-      media.add('(min-width: 900px) and (min-height: 600px) and (prefers-reduced-motion: no-preference)', () => {
+      media.add('(min-width: 900px) and (min-height: 480px) and (prefers-reduced-motion: no-preference)', () => {
         const sequence = root.closest<HTMLElement>('.story-sequence')!;
         const stage = sequence.querySelector<HTMLElement>('.story-stage')!;
         const hero = sequence.querySelector<HTMLElement>('.hero-motion')!;
@@ -142,12 +142,21 @@ export default function Experience() {
           // matchMedia/context reverts the pin spacer, inline transforms and timeline together.
         };
       });
-      media.add('(max-width: 899px) and (prefers-reduced-motion: no-preference)', () => {
+      // Complement the pinned layout, including wide but short browser windows.
+      media.add('((max-width: 899px) or (max-height: 479px)) and (prefers-reduced-motion: no-preference)', () => {
         const hero = root.closest('.story-sequence')?.querySelector('.hero-motion');
         if (!hero) return;
         gsap.timeline({ scrollTrigger: { trigger: hero, start: 'top top', end: 'bottom 25%', scrub: true } })
           .to(hero.querySelector('.portrait-stage'), { y: -28, opacity: .35, ease: 'none' }, 0)
           .fromTo(root.querySelector('.experience-stage'), { y: 32, opacity: .35 }, { y: 0, opacity: 1, ease: 'none' }, 0);
+        root.querySelectorAll<HTMLElement>('.experience-reading .experience-stage').forEach(article => {
+          const layers = article.querySelectorAll('[data-layer]');
+          gsap.from(layers, {
+            y: index => 18 + index * 5, rotation: index => (index % 2 ? 2 : -2),
+            scale: .96, opacity: .35, stagger: .07, ease: 'none',
+            scrollTrigger: { trigger: article.querySelector('.layered-visual'), start: 'top 95%', end: 'center 60%', scrub: true, invalidateOnRefresh: true },
+          });
+        });
       });
     }, root);
     return () => { media.revert(); context.revert(); };
