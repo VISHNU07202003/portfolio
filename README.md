@@ -1,6 +1,6 @@
 # Vishnu Sai Padyala — Portfolio
 
-Animated React/TypeScript portfolio with GSAP transitions, six case studies and a local prepared-answer Manu assistant. This branch migrates the approved portfolio to GitHub Pages under `/portfolio/`.
+Animated React/TypeScript portfolio with GSAP transitions, six case studies and a local prepared-answer Manu assistant. Prepared for GitHub Pages under `/portfolio/`.
 
 ## Develop and verify
 
@@ -18,12 +18,16 @@ PORTFOLIO_BASE=/portfolio/ npm run build:pages
 
 ## GitHub activity
 
-The public site reads `github-activity.json`, generated at build time from public GitHub data. It does not call a server-only `/api/github` endpoint. The UI shows the check timestamp and identifies the figures as a build snapshot. Counts are not live.
+The GitHub section renders two manually maintained metric cards immediately from `scripts/github-snapshot.json`: public repositories and indexed public commits. It displays the verification date and explains that the counts are not live. There is no browser polling, refresh button, recent-commit feed or server dependency.
 
-If GitHub is unavailable during a build, the saved `scripts/github-snapshot.json` is used and explicitly marked stale. No counts are invented. Run a new build/deployment to refresh published data. No API key or database is required; Manu uses prepared answers locally.
+Update the saved figures and their verification timestamp only after checking public GitHub data. The Pages build validates and copies that same snapshot without making GitHub requests or changing the saved file. No API key or database is required; Manu continues using prepared answers locally.
 
 ## GitHub Pages deployment
 
 See [DEPLOYMENT.md](DEPLOYMENT.md). Pushes and pull requests build and validate an artifact; they do not publish this new version. After reviewing and merging, select **Settings → Pages → Source → GitHub Actions**, then run **Build and publish portfolio** on `main` with **publish** checked. This publishes the website publicly.
 
-Only reviewed source files and approved images are tracked. Private documents and generated `dist/` are excluded. The prior website remains in the repository's existing main history until this branch is merged.
+Only reviewed source files and approved images are tracked. Private documents and generated `dist/` are excluded. The prior website remains available in Git history.
+
+## If Pages displays this README
+
+The repository root contains source files, not the built website. Publishing directly from "main / (root)" lets the legacy Pages builder render this README. Use **Settings → Pages → Source → GitHub Actions** instead, then publish the reviewed "dist/" artifact using the workflow described above. A successful build-only workflow does not itself update the live site.

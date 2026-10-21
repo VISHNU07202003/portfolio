@@ -23,7 +23,7 @@ The deploy job has Pages and OIDC permissions only and uses the `github-pages` e
 
 ## Statistics and routing
 
-The browser reads a base-aware `github-activity.json`, never `/api/github`. Build-time GitHub requests are unauthenticated and can be rate-limited. On failure a previously verified saved snapshot is published with `stale: true`; if no saved snapshot exists, the build fails. Public commit counts represent indexed authored public default-branch commits, not lifetime/private/all-branch activity.
+The GitHub metric cards are bundled from the manually verified `scripts/github-snapshot.json`. The browser makes no GitHub or snapshot requests. The build validates and copies the saved data to `dist/github-activity.json` without network requests or modifying the source snapshot. Counts and their verification date change only when explicitly edited and a new version is published. Public commit counts represent indexed authored public default-branch commits, not lifetime/private/all-branch activity.
 
 `PORTFOLIO_BASE` controls Vite asset URLs and the base metadata used by internal links and route matching. For this repository it is `/portfolio/`, with lower-case spelling. A custom domain requires `/` and its separate DNS/Pages configuration.
 
