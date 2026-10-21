@@ -1,9 +1,11 @@
-export type VisualKind = 'lab' | 'events' | 'android' | 'federated' | 'map' | 'plant';
+export type VisualKind = 'lab' | 'events' | 'android' | 'federated' | 'map' | 'plant' | 'community' | 'commerce' | 'analytics' | 'covid';
 export interface PublicLink { label: string; href: string; }
 export interface Story { id: string; organization: string; title: string; dates?: string; classification?: string; heading: string; summary: string; tags: string[]; kind: VisualKind; caseStudy?: string; }
 export interface Project { id: string; name: string; category: string; classification: string; heading: string; summary: string; featured: boolean; kind: VisualKind; sections: { title: string; body: string }[]; links: PublicLink[]; }
 export interface PublicAnswer { id: string; title: string; body: string; link: PublicLink; }
 export interface PortfolioContent {
+  additionalWork: (Omit<Project, 'sections' | 'links' | 'featured'> & { repository: string })[];
+  workChapters: { id: string; organization: string; label: string; projectIds: string[] }[];
   certifications: { name: string; issuer: string; dates: string; status: string }[];
   contact: PublicLink[];
   profile: { name: string; headline: string; introduction: string; bio: string; education: { institution: string; degree: string; dates: string }[]; strengths: string[]; skills: { area: string; items: string }[] };

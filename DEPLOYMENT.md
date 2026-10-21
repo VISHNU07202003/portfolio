@@ -6,7 +6,7 @@ Target repository: `VISHNU07202003/portfolio`. Node.js: 24. Build command:
 PORTFOLIO_BASE=/portfolio/ npm run build:pages
 ```
 
-Upload only `dist/` to Pages. It includes bundled assets, the home page, six case-study directory entries, a not-found entry, `.nojekyll`, and public timestamped GitHub statistics. There is no server runtime or required secret.
+Upload only `dist/` to Pages. It includes bundled assets, the home page, a dedicated Work gallery entry, six case-study directory entries, a not-found entry, `.nojekyll`, and public timestamped GitHub statistics. There is no server runtime or required secret.
 
 ## Build versus publication
 

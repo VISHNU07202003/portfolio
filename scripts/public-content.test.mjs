@@ -46,6 +46,19 @@ test('all public links resolve to published case ids or known section anchors',(
  const sections=new Set(['work','experience','about','education','skills','certifications','contact']);
  const ids=new Set(content.projects.map(p=>p.id));
  const links=[...content.projects.flatMap(p=>p.links),...content.answers.map(a=>a.link),...content.experiences.filter(s=>s.caseStudy).map(s=>({href:`/work/${s.caseStudy}`}))];
- for(const {href} of links){if(href.startsWith('/work/'))assert.ok(ids.has(href.slice(6)),href);else assert.ok(href.startsWith('/#')&&sections.has(href.slice(2)),href);}
+ for(const {href} of links){if(href==='/work/')continue;if(href.startsWith('/work/'))assert.ok(ids.has(href.slice(6)),href);else assert.ok(href.startsWith('/#')&&sections.has(href.slice(2)),href);}
  for(const p of content.projects){const count=p.id==='plant-cropper'?4:10;assert.equal(p.sections.length,count);assert.equal(new Set(p.sections.map(s=>s.title)).size,count);assert.ok(p.sections.every(s=>s.body.trim()));}
+});
+
+test('Work chapters use the requested order and only approved project records',()=>{
+ assert.deepEqual(Array.from(content.workChapters,c=>c.id),['uf','vit-ap','smartinternz']);
+ assert.deepEqual(Array.from(content.workChapters[0].projectIds),['cell-counter','plant-cropper','transgis','reddit-clone','zara-replica','yelp-analysis']);
+ assert.deepEqual(Array.from(content.workChapters[1].projectIds),['campus-events','fedguard','covid-19']);
+ assert.deepEqual(Array.from(content.workChapters[2].projectIds),['snack-squad']);
+ const projects=content.workChapters.flatMap(c=>c.projectIds);
+ assert.equal(new Set(projects).size,projects.length);
+ assert.ok(projects.every(id=>[...content.projects,...content.additionalWork].some(p=>p.id===id)));
+ assert.equal(content.additionalWork.length,4);
+ assert.ok(content.additionalWork.every(p=>p.repository.startsWith('https://github.com/VISHNU07202003/')));
+ assert.doesNotMatch(JSON.stringify(content.additionalWork),/\d+(?:\.\d+)?\s*%|\d+\+\s*(users|reviews|businesses)|production.ready/i);
 });

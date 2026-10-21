@@ -4,6 +4,8 @@ import { loadPublicModule } from './load-public-module.mjs';
 
 const { default: content } = loadPublicModule('publicContent');
 const html = await readFile('dist/index.html', 'utf8');
+await mkdir('dist/work', { recursive: true });
+await writeFile('dist/work/index.html', html);
 for (const project of content.projects) {
   if (!/^[a-z0-9-]+$/.test(project.id)) throw Error('Invalid case route');
   const directory = `dist/work/${project.id}`;

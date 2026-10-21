@@ -4,6 +4,38 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Chapter panels keep normal scrolling; only their visual depth follows progress.
+export function useWorkGalleryMotion() {
+  const ref = useRef<HTMLElement>(null);
+  useLayoutEffect(() => {
+    const root = ref.current;
+    if (!root) return;
+    const media = gsap.matchMedia();
+    const context = gsap.context(() => {
+      media.add({ motion: '(prefers-reduced-motion: no-preference)', desktop: '(min-width: 900px)' }, ({ conditions }) => {
+        if (!conditions?.motion) return;
+        const desktop = conditions.desktop;
+        root.querySelectorAll<HTMLElement>('.project-slide').forEach((slide, index) => {
+          const art = slide.querySelector('.project-slide-art');
+          gsap.fromTo(art, { y: desktop ? 75 : 20, rotation: desktop ? (index % 2 ? 5 : -5) : 0, scale: .94 }, {
+            y: desktop ? -45 : -12, rotation: desktop ? (index % 2 ? -2 : 2) : 0, scale: 1.02, ease: 'none',
+            scrollTrigger: { id: `gallery-depth-${index}`, trigger: slide, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
+          });
+          gsap.fromTo(slide.querySelector('.project-landscape'), { yPercent: -8, scale: 1.08 }, {
+            yPercent: 8, scale: 1, ease: 'none',
+            scrollTrigger: { trigger: slide, start: 'top bottom', end: 'bottom top', scrub: true },
+          });
+          gsap.fromTo(slide.querySelector('.project-slide-copy'), { y: desktop ? 42 : 16 }, {
+            y: 0, ease: 'none', scrollTrigger: { trigger: slide, start: 'top 85%', end: 'top 15%', scrub: true },
+          });
+        });
+      });
+    }, root);
+    return () => { media.revert(); context.revert(); };
+  }, []);
+  return ref;
+}
+
 // Normal document flow: each composition follows the reader, without extra pins.
 export function usePageMotion() {
   const ref = useRef<HTMLElement>(null);

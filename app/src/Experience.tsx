@@ -188,7 +188,7 @@ export default function Experience() {
         </div>
         <div className="experience-stage-footer">
           <div className="experience-stage-controls" role="group" aria-label="Experience chapters">{stories.map((story, index) => <button className="experience-chapter-button" key={story.id} aria-pressed={index === 0} onClick={() => chooseChapter(index)}>{index === 0 ? 'UF IFAS' : index === 1 ? 'VIT-AP' : 'SmartInternz'}</button>)}</div>
-          <button className="experience-reading-button" onClick={toggleReading}>Read without motion</button><a className="experience-skip" href="#work">Continue to Work ↓</a>
+          <button className="experience-reading-button" onClick={toggleReading}>Read without motion</button><a className="experience-skip" href={siteHref('/work/')}>Continue to Work ↗</a>
         </div>
         <div className="experience-progress" aria-hidden="true"><span/></div>
       </div>

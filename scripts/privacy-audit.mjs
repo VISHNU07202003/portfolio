@@ -9,13 +9,20 @@ const hash=b=>createHash('sha256').update(b).digest('hex');
 const manuHash='4f3ff6214f2cbcbac376f2aad058d56acdf08e67c098d062b4579aeb9dd94b57';
 // Owner supplied this close-up and requested an Adobe crop for the chat on 2026-10-18.
 const manuChatHash='cef5544f34700590c002a03e7f0df4b4e6679aa032cfff2449124a424429d23a';
+// Official organization files, unmodified; owner confirmed permission for use.
+export const logoAssets=new Map([
+ ['app/src/assets/uf-ifas-logo.png','419c4c90bc643a8c740f75717fb7e622c05e35d2fb445f3d8a70ee8a0ac7773a'],
+ ['app/src/assets/vit-ap-logo.png','ee8f6b2bb7421d7f58e1695036def25401583d18ee38f4cd358aea30746c3fc4'],
+ ['app/src/assets/smartinternz-logo.png','d4d27846cc834597820a9655d5b0b5c88a0226fde582c153aac2690d3dfccaa7'],
+]);
 export function auditSource(base=root){
  const problems=[];
  for(const p of walk(resolve(base,'public')))if(relative(resolve(base,'public'),p).replaceAll('\\','/')!=='assets/README.md')problems.push(`Unapproved public file: ${relative(base,p)}`);
  for(const p of walk(resolve(base,'app'))){
   const rel=relative(base,p).replaceAll('\\','/');
   const approvedManu=(rel==='app/src/assets/manu-approved.png'&&hash(readFileSync(p))===manuHash)||(rel==='app/src/assets/manu-chat-portrait.png'&&hash(readFileSync(p))===manuChatHash);
-  if(!['.ts','.tsx','.css','.html'].includes(extname(p))&&rel!=='app/src/assets/portrait.jpg'&&!approvedManu)problems.push(`Unapproved application file: ${rel}`);
+  const approvedLogo=logoAssets.has(rel)&&hash(readFileSync(p))===logoAssets.get(rel);
+  if(!['.ts','.tsx','.css','.html'].includes(extname(p))&&rel!=='app/src/assets/portrait.jpg'&&!approvedManu&&!approvedLogo)problems.push(`Unapproved application file: ${rel}`);
   if(['.ts','.tsx','.css','.html'].includes(extname(p))&&/private-documents|design-inputs|career-sources|\.pdf\b|import\.meta\.glob/.test(readFileSync(p,'utf8')))problems.push(`Private source reference: ${rel}`);
  }
  return problems;
@@ -39,7 +46,7 @@ export function auditBundle(base=root){
  for(const p of walk(dist)){
   const data=readFileSync(p);const ext=extname(p);const rel=relative(dist,p);
   if(!['.html','.js','.css','.jpg','.png'].includes(ext)&&!['github-activity.json','.nojekyll'].includes(rel))problems.push(`Unexpected release file: ${rel}`);
-  if(ext==='.png'&&![manuHash,manuChatHash].includes(hash(data)))problems.push(`Unapproved release image: ${rel}`);
+  if(ext==='.png'&&![manuHash,manuChatHash,...logoAssets.values()].includes(hash(data)))problems.push(`Unapproved release image: ${rel}`);
   if(hashes.has(hash(data)))problems.push(`Private source fingerprint found: ${rel}`);
   if(ext==='.jpg'&&hash(data)!==portraitHash)problems.push(`Unapproved release image: ${rel}`);
   if(['.html','.js','.css'].includes(ext)){const text=data.toString();for(const needle of forbidden)if(text.includes(needle))problems.push(`Draft/private marker in ${rel}: ${needle}`);

@@ -11,6 +11,18 @@ test('detects renamed private image by fingerprint',()=>fixture(dir=>{writeFileS
 test('detects draft content and review endpoint in bundle',()=>fixture(dir=>{writeFileSync(join(dir,'dist/assets/app.js'),'fetch("/__review/manu.jpg")');assert.ok(auditBundle(dir).some(x=>x.includes('Draft/private')));}));
 test('allows only the approved portrait with clean output',()=>fixture(dir=>{writeFileSync(join(dir,'dist/assets/portrait.jpg'),'approved-photo');assert.deepEqual(auditBundle(dir),[]);}));
 test('rejects a replacement or unrelated PNG even at the approved Manu path',()=>fixture(dir=>{writeFileSync(join(dir,'app/src/assets/manu-approved.png'),'unapproved');writeFileSync(join(dir,'dist/assets/manu.png'),'unapproved');assert.ok(auditSource(dir).some(x=>x.includes('Unapproved')));assert.ok(auditBundle(dir).some(x=>x.includes('Unapproved release image')));}));
+
+test('official logo allowance is restricted to the exact approved files',()=>fixture(dir=>{
+ for(const name of ['uf-ifas-logo.png','vit-ap-logo.png','smartinternz-logo.png']){
+  const bytes=readFileSync(new URL(`../app/src/assets/${name}`,import.meta.url));
+  writeFileSync(join(dir,'app/src/assets',name),bytes);writeFileSync(join(dir,'dist/assets',name),bytes);
+ }
+ assert.deepEqual(auditSource(dir),[]);assert.deepEqual(auditBundle(dir),[]);
+ writeFileSync(join(dir,'app/src/assets/uf-ifas-logo.png'),'replacement');
+ writeFileSync(join(dir,'dist/assets/unapproved-logo.png'),'replacement');
+ assert.ok(auditSource(dir).some(x=>x.includes('Unapproved')));
+ assert.ok(auditBundle(dir).some(x=>x.includes('Unapproved release image')));
+}));
 test('allows approved identity, credentials and exact email while rejecting held metrics and other emails',()=>fixture(dir=>{writeFileSync(join(dir,'dist/assets/app.js'),'TransGIS FedGuard VIT-AP University Blueberry Breeding AWS Certified AI Practitioner vishnusaipadyala07@gmail.com');assert.deepEqual(auditBundle(dir),[]);writeFileSync(join(dir,'dist/assets/app.js'),'Accuracy: 98.76% secret@example.org');assert.ok(auditBundle(dir).length>=2);}));
 
 // Publication regressions use isolated copies of the exact release manifest.

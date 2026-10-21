@@ -3,10 +3,11 @@ import { resolve, relative, extname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { walk, auditSource } from './privacy-audit.mjs';
+import { walk, auditSource, logoAssets } from './privacy-audit.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const assets = new Map([
+ ...logoAssets,
  ['app/src/assets/portrait.jpg', '6ce56d40b85044ef8a9d57989af5afc0aebf52cd7156455365f0e585e826c26b'],
  ['app/src/assets/manu-approved.png', '4f3ff6214f2cbcbac376f2aad058d56acdf08e67c098d062b4579aeb9dd94b57'],
  ['app/src/assets/manu-chat-portrait.png', 'cef5544f34700590c002a03e7f0df4b4e6679aa032cfff2449124a424429d23a'],

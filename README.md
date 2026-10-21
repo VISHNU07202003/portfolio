@@ -14,7 +14,13 @@ npm run lint
 PORTFOLIO_BASE=/portfolio/ npm run build:pages
 ```
 
-`dist/` contains the complete static site. Case studies each receive their own `work/<id>/index.html`, so opening links directly and refreshing works without server rewrites. Assets, navigation and Manu links respect the deployment base. For a custom domain, build with `PORTFOLIO_BASE=/` and update the workflow accordingly.
+`dist/` contains the complete static site. The Work gallery receives `work/index.html`; case studies each receive their own `work/<id>/index.html`, so opening links directly and refreshing works without server rewrites. Assets, navigation and Manu links respect the deployment base. For a custom domain, build with `PORTFOLIO_BASE=/` and update the workflow accordingly.
+
+## Work collection
+
+Work opens a separate gallery with organization-themed chapters for UF, VIT-AP and SmartInternz. Accessible project tabs switch approved summaries and conceptual illustrations. Six existing case studies remain available; four additional repository-backed studies link to their source repositories. Native scrolling drives visual depth without scroll hijacking. Mobile panels stack naturally and reduced motion disables choreography. The homepage Experience stage remains independent.
+
+Organization logos are original files from UF/IFAS Branding, VIT-AP's official website and SmartInternz's official website. The owner confirmed permission for their use. Source and release audits verify their exact hashes; other imagery remains excluded.
 
 ## GitHub activity
 

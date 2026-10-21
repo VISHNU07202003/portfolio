@@ -8,6 +8,7 @@ const assets=[...html.matchAll(/(?:src|href)="([^\"]+\/assets\/[^\"]+)"/g)].map(
 assert.ok(assets.length>=2,'script and stylesheet found');
 for(const asset of assets){assert.ok(asset.startsWith(base+'assets/'));assert.ok(existsSync('dist/'+asset.slice(base.length)));}
 const {default:content}=loadPublicModule('publicContent');
+assert.equal(readFileSync('dist/work/index.html','utf8'),html,'Work gallery has a refreshable static entry');
 for(const p of content.projects){const page=readFileSync(`dist/work/${p.id}/index.html`,'utf8');assert.equal(page,html);}
 assert.ok(existsSync('dist/.nojekyll'));assert.ok(existsSync('dist/404.html'));
 const snapshot=JSON.parse(readFileSync('dist/github-activity.json','utf8'));
