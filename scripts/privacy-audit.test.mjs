@@ -13,7 +13,7 @@ test('allows only the approved portrait with clean output',()=>fixture(dir=>{wri
 test('rejects a replacement or unrelated PNG even at the approved Manu path',()=>fixture(dir=>{writeFileSync(join(dir,'app/src/assets/manu-approved.png'),'unapproved');writeFileSync(join(dir,'dist/assets/manu.png'),'unapproved');assert.ok(auditSource(dir).some(x=>x.includes('Unapproved')));assert.ok(auditBundle(dir).some(x=>x.includes('Unapproved release image')));}));
 
 test('official logo allowance is restricted to the exact approved files',()=>fixture(dir=>{
- for(const name of ['uf-ifas-logo.png','vit-ap-logo.png','smartinternz-logo.png']){
+ for(const name of ['uf-logo.png','uf-ifas-logo.png','vit-ap-logo.png','smartinternz-logo.png']){
   const bytes=readFileSync(new URL(`../app/src/assets/${name}`,import.meta.url));
   writeFileSync(join(dir,'app/src/assets',name),bytes);writeFileSync(join(dir,'dist/assets',name),bytes);
  }

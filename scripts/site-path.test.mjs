@@ -16,3 +16,16 @@ for(const base of ['/','/portfolio/'])test(`navigation and direct case routes wo
  assert.equal(exports.siteHref('https://github.com/example'),'https://github.com/example');
  assert.equal(exports.siteHref('#work'),'#work');
 });
+
+test('case-study returns preserve homepage flow and explicit gallery entry',()=>{
+ const exports={};runInNewContext(compiled,{exports});
+ for(const id of ['transgis','fedguard','plant-cropper']){
+  assert.equal(exports.caseStudyReturn(id,true,null).href,'/#work');
+  assert.equal(exports.caseStudyReturn(id,true,'work').href,`/work/#${id}`);
+ }
+ for(const id of ['cell-counter','campus-events','snack-squad']){
+  assert.equal(exports.caseStudyReturn(id,false,null).href,'/#experience');
+  assert.equal(exports.caseStudyReturn(id,false,'work').href,`/work/#${id}`);
+ }
+ assert.equal(exports.caseStudyReturn('transgis',true,'unexpected').href,'/#work');
+});

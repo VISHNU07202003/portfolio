@@ -51,10 +51,11 @@ test('all public links resolve to published case ids or known section anchors',(
 });
 
 test('Work chapters use the requested order and only approved project records',()=>{
- assert.deepEqual(Array.from(content.workChapters,c=>c.id),['uf','vit-ap','smartinternz']);
- assert.deepEqual(Array.from(content.workChapters[0].projectIds),['cell-counter','plant-cropper','transgis','reddit-clone','zara-replica','yelp-analysis']);
- assert.deepEqual(Array.from(content.workChapters[1].projectIds),['campus-events','fedguard','covid-19']);
- assert.deepEqual(Array.from(content.workChapters[2].projectIds),['snack-squad']);
+ assert.deepEqual(Array.from(content.workChapters,c=>c.id),['ifas','uf','vit-ap','smartinternz']);
+ assert.deepEqual(Array.from(content.workChapters[0].projectIds),['cell-counter','plant-cropper']);
+ assert.deepEqual(Array.from(content.workChapters[1].projectIds),['transgis','reddit-clone','zara-replica','yelp-analysis']);
+ assert.deepEqual(Array.from(content.workChapters[2].projectIds),['campus-events','fedguard','covid-19']);
+ assert.deepEqual(Array.from(content.workChapters[3].projectIds),['snack-squad']);
  const projects=content.workChapters.flatMap(c=>c.projectIds);
  assert.equal(new Set(projects).size,projects.length);
  assert.ok(projects.every(id=>[...content.projects,...content.additionalWork].some(p=>p.id===id)));

@@ -12,3 +12,8 @@ export function sitePath(pathname: string) {
   const path = pathname === base.slice(0, -1) ? '/' : pathname.startsWith(base) ? '/' + pathname.slice(base.length) : pathname;
   return path.replace(/\/index\.html$/, '/').replace(/\/$/, '') || '/';
 }
+
+export function caseStudyReturn(id: string, featured: boolean, source: string | null) {
+  if (source === 'work') return { href: `/work/#${id}`, label: '← Work gallery' };
+  return featured ? { href: '/#work', label: '← Selected work' } : { href: '/#experience', label: '← Experience' };
+}

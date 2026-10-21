@@ -3,7 +3,8 @@ import type { PortfolioContent } from './types';
 // Explicit public records approved for Phase 3. No source-file discovery or draft imports.
 const content: PortfolioContent = {
   workChapters: [
-    { id: 'uf', organization: 'University of Florida', label: 'UF / IFAS', projectIds: ['cell-counter', 'plant-cropper', 'transgis', 'reddit-clone', 'zara-replica', 'yelp-analysis'] },
+    { id: 'ifas', organization: 'UF/IFAS', label: 'UF / IFAS', projectIds: ['cell-counter', 'plant-cropper'] },
+    { id: 'uf', organization: 'University of Florida', label: 'UF', projectIds: ['transgis', 'reddit-clone', 'zara-replica', 'yelp-analysis'] },
     { id: 'vit-ap', organization: 'VIT-AP University', label: 'VIT-AP', projectIds: ['campus-events', 'fedguard', 'covid-19'] },
     { id: 'smartinternz', organization: 'SmartInternz', label: 'SmartInternz', projectIds: ['snack-squad'] },
   ],
@@ -111,7 +112,7 @@ const content: PortfolioContent = {
         { title: 'Results and limitations', body: 'The prototype connects map-based exploration, source-linked data and bounded tool calling in one workflow. It includes explicit no-data behavior and deterministic fallback. This is a research prototype; no agency endorsement, production deployment, general accuracy or real-time traffic-monitoring claim is made.' },
         { title: 'A visual guide', body: 'The cover is an original conceptual diagram of spatial connections. It explains the subject of the project; it is not an application screenshot, a measured result or a map of live traffic.' },
       ],
-      links: [{ label: 'Explore the other case studies', href: '/work/' }],
+      links: [{ label: 'Explore the other case studies', href: '/#work' }],
     },
     {
       id: 'fedguard', name: 'FedGuard', category: 'Federated learning', classification: 'Academic simulation platform', featured: true, kind: 'federated',
@@ -129,7 +130,7 @@ const content: PortfolioContent = {
         { title: 'Results and limitations', body: 'FedGuard brings simulated training runs, experiment history and operational views into a shared workspace. It remains an academic simulation platform: secure aggregation is not active in the current simulation, some interface surfaces are samples or placeholders, and provider-backed features depend on configuration. No general anomaly-detection accuracy or production-fleet claim is made.' },
         { title: 'A visual guide', body: 'The cover is an original conceptual diagram of connected learning components. It is not a product screenshot or evidence of a live client fleet. The case describes implementation and documented limitations without publishing experiment scores.' },
       ],
-      links: [{ label: 'Explore the other case studies', href: '/work/' }],
+      links: [{ label: 'Explore the other case studies', href: '/#work' }],
     },
     {
       id: 'campus-events', name: 'Campus Event Management Platform', category: 'Full-stack engineering & UX research', classification: 'University application', featured: false, kind: 'events',
@@ -159,7 +160,7 @@ const content: PortfolioContent = {
         { title: 'Engineering approach', body: 'Background removal and ripe-berry filtering are separate steps in the image-processing workflow. This overview describes those steps without implying integration with the microscopy application.' },
         { title: 'Scope and limitations', body: 'The project is presented as an image-processing workflow. No numerical evaluation, production deployment or automatic scientific conclusion is claimed. The cover is an explanatory diagram, not a laboratory image or measured result.' },
       ],
-      links: [{ label: 'Return to selected work', href: '/work/' }],
+      links: [{ label: 'Return to selected work', href: '/#work' }],
     },
   ],
   answers: [
@@ -173,7 +174,7 @@ const content: PortfolioContent = {
     { id: 'campus', title: 'The VIT-AP experience', body: 'Vishnu worked as a Software Engineering & UX Research Student Assistant at VIT-AP University. He led three student developers, working with a faculty advisor, on a Django/React campus-event application and used student feedback to guide updates.', link: { label: 'Explore campus events', href: '/work/campus-events' } },
     { id: 'transgis', title: 'Source-linked spatial analysis', body: 'TransGIS is a research prototype that connects transportation data, deterministic spatial analysis and bounded LLM tool calling. Its design emphasizes source-linked answers and explicit no-data responses.', link: { label: 'Explore TransGIS', href: '/work/transgis' } },
     { id: 'fedguard', title: 'Inspecting federated experiments', body: 'FedGuard is an academic platform for simulated federated-learning experiments, with a React interface, FastAPI services and experiment records. It explores training strategies, malformed updates and configuration-dependent privacy trade-offs.', link: { label: 'Explore FedGuard', href: '/work/fedguard' } },
-    { id: 'research', title: 'Research interests', body: 'Vishnu’s work explores computer vision for research workflows, geospatial data grounding and distributed learning systems.', link: { label: 'Explore the work', href: '/work/' } },
+    { id: 'research', title: 'Research interests', body: 'Vishnu’s work explores computer vision for research workflows, geospatial data grounding and distributed learning systems.', link: { label: 'Explore the work', href: '/#work' } },
   ],
 };
 export default content;

@@ -18,7 +18,7 @@ PORTFOLIO_BASE=/portfolio/ npm run build:pages
 
 ## Work collection
 
-Work opens a separate gallery with organization-themed chapters for UF, VIT-AP and SmartInternz. Accessible project tabs switch approved summaries and conceptual illustrations. Six existing case studies remain available; four additional repository-backed studies link to their source repositories. Native scrolling drives visual depth without scroll hijacking. Mobile panels stack naturally and reduced motion disables choreography. The homepage Experience stage remains independent.
+The hero navigation's Work link opens a separate gallery with organization-themed chapters for UF/IFAS, University of Florida, VIT-AP and SmartInternz. Only Cell Counter and Plant Cropper belong to UF/IFAS; TransGIS and the other UF projects appear in the university chapter. Accessible project tabs switch approved summaries and conceptual illustrations. Six existing case studies remain available; four additional repository-backed studies link to their source repositories. Native scrolling drives visual depth without scroll hijacking. Mobile panels stack naturally and reduced motion disables choreography. The original homepage flow, three Selected Work cards and Experience stage remain intact. Case-study returns preserve whether the visitor came from the gallery or the homepage.
 
 Organization logos are original files from UF/IFAS Branding, VIT-AP's official website and SmartInternz's official website. The owner confirmed permission for their use. Source and release audits verify their exact hashes; other imagery remains excluded.
 

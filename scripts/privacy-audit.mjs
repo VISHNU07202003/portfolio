@@ -11,6 +11,7 @@ const manuHash='4f3ff6214f2cbcbac376f2aad058d56acdf08e67c098d062b4579aeb9dd94b57
 const manuChatHash='cef5544f34700590c002a03e7f0df4b4e6679aa032cfff2449124a424429d23a';
 // Official organization files, unmodified; owner confirmed permission for use.
 export const logoAssets=new Map([
+ ['app/src/assets/uf-logo.png','fa356cccac6b7e3ff84190dbdcc2dfa6243a590e6b5e41a6b5f596e4b198a0d1'],
  ['app/src/assets/uf-ifas-logo.png','419c4c90bc643a8c740f75717fb7e622c05e35d2fb445f3d8a70ee8a0ac7773a'],
  ['app/src/assets/vit-ap-logo.png','ee8f6b2bb7421d7f58e1695036def25401583d18ee38f4cd358aea30746c3fc4'],
  ['app/src/assets/smartinternz-logo.png','d4d27846cc834597820a9655d5b0b5c88a0226fde582c153aac2690d3dfccaa7'],

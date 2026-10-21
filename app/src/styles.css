@@ -287,6 +287,7 @@ body:has(.story-sequence)>.site-header,body:has(.story-sequence) #root>.site-hea
 .gallery-bar nav a{display:flex;gap:10px;align-items:center;min-height:44px;font-size:10px;color:#b9b3c2}.gallery-bar nav a>span{color:#efedf1}
 .project-slide{--chapter-accent:#c7d6f4;--chapter-glow:#375e9360;position:relative;isolation:isolate;overflow:clip;min-height:100svh;padding:48px 0 26px;background:#111c35;color:#f1f0ee;scroll-margin-top:0;display:flex;flex-direction:column}
 .project-slide-uf{background:linear-gradient(120deg,#0c1830 5%,#142c50 65%,#183456);--chapter-accent:#ffb49a;--chapter-glow:#fa46162a}
+.project-slide-ifas{background:linear-gradient(120deg,#10241f 5%,#193c35 65%,#244c40);--chapter-accent:#c6d8ae;--chapter-glow:#8dbb7b25}
 .project-slide-vit-ap{background:linear-gradient(120deg,#27141c,#4a2030 65%,#552f36);--chapter-accent:#e8c99b;--chapter-glow:#d1a36d32}
 .project-slide-smartinternz{background:linear-gradient(120deg,#15142c,#292548 65%,#243858);--chapter-accent:#b6c6fb;--chapter-glow:#8198ea35}
 .project-landscape{position:absolute;inset:-10%;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 80% 30%,var(--chapter-glow),transparent 60%)}
