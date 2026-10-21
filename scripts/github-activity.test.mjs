@@ -68,3 +68,32 @@ test('compiled deployment entry runs without the source tree and serves HTTP res
   await rm(directory,{recursive:true,force:true});
  }
 });
+
+import { createRequire } from 'node:module';
+import { createElement } from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+const componentSource = readFileSync(new URL('../app/src/GithubActivity.tsx', import.meta.url), 'utf8');
+const savedMetrics = JSON.parse(readFileSync(new URL('./github-snapshot.json', import.meta.url), 'utf8'));
+function renderStaticMetrics() {
+ const output = ts.transpileModule(componentSource, {compilerOptions:{module:ts.ModuleKind.CommonJS,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
+ const exports = {};
+ const require = createRequire(import.meta.url);
+ runInNewContext(output, {exports,require: id => id.endsWith('github-snapshot.json') ? savedMetrics : require(id)});
+ return renderToStaticMarkup(createElement(exports.default));
+}
+test('static GitHub cards render saved public counts and their verification date immediately', () => {
+ const html = renderStaticMetrics();
+ assert.equal((html.match(/class="github-number"/g)||[]).length, 2);
+ assert.ok(html.includes(`>${savedMetrics.repositories}</span>`));
+ assert.ok(html.includes(`>${savedMetrics.commits}</span>`));
+ assert.ok(html.includes('October 21, 2026'));
+ assert.ok(html.includes('these figures are not live'));
+ assert.ok(html.includes('Public repositories'));
+ assert.ok(html.includes('Indexed public commits'));
+});
+test('static metrics have no refresh controls, activity feed, polling or network dependency', () => {
+ const html = renderStaticMetrics();
+ assert.doesNotMatch(html, /<button|<ol|role="status"|Connecting|Loading|Refresh data|Latest indexed commits/);
+ assert.doesNotMatch(componentSource, /\bfetch\s*\(|\bsetInterval\s*\(|\buseEffect\b/);
+ assert.match(html, /href="https:\/\/github.com\/VISHNU07202003"/);
+});

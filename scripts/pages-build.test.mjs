@@ -12,6 +12,7 @@ for(const p of content.projects){const page=readFileSync(`dist/work/${p.id}/inde
 assert.ok(existsSync('dist/.nojekyll'));assert.ok(existsSync('dist/404.html'));
 const snapshot=JSON.parse(readFileSync('dist/github-activity.json','utf8'));
 assert.ok(Number.isSafeInteger(snapshot.repositories));assert.ok(Number.isFinite(Date.parse(snapshot.fetchedAt)));
-assert.ok(Array.isArray(snapshot.latest));assert.equal(typeof snapshot.stale,'boolean');
+assert.ok(Number.isSafeInteger(snapshot.commits));
+assert.deepEqual(snapshot,JSON.parse(readFileSync('scripts/github-snapshot.json','utf8')),'build preserves manually verified metrics');
 assert.ok(!/email|Authorization|token/i.test(JSON.stringify(snapshot)),'public metadata only');
 console.log(`Pages verification passed: ${base}, ${content.projects.length} refreshable case routes, assets and timestamped statistics.`);
