@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, type ReactNode } from 'react';
+import { useId, type ReactNode } from 'react';
 import type { VisualKind } from './types';
 import ifasArtwork from './assets/ifas-blueberry-concept.jpg';
 import vitArtwork from './assets/vit-campus-concept.jpg';
@@ -12,18 +12,48 @@ import yelpArtwork from './assets/yelp-project-concept.webp';
 import covidArtwork from './assets/covid-project-concept.webp';
 import snackArtwork from './assets/snack-project-concept.webp';
 
-function useArtworkVisibility() {
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    let visible = false;
-    const sync = () => { root.dataset.artActive = String(visible && !document.hidden); };
-    const observer = new IntersectionObserver(entries => { visible = entries.some(entry => entry.isIntersecting); sync(); });
-    observer.observe(root); document.addEventListener('visibilitychange', sync);
-    return () => { observer.disconnect(); document.removeEventListener('visibilitychange', sync); };
-  }, []);
-  return ref;
+// Original, static vector illustrations for the homepage cards only.
+// These explain each subject without representing application UI or measured data.
+export function SelectedWorkArtwork({ projectId }: { projectId: string }) {
+  const map = projectId === 'transgis', plant = projectId === 'plant-cropper';
+  const label = map ? 'Flat conceptual street map with source-linked locations; not actual geographic data' : plant ? 'Flat leaf and berry crop illustration; not laboratory imagery' : 'Flat federated learning node diagram; not an application screenshot or measured result';
+  return <div className={`selected-flat-art selected-flat-${map?'map':plant?'plant':'federated'}`}>
+    <svg viewBox="0 0 760 460" role="img" aria-label={label} preserveAspectRatio="xMidYMid meet">
+      {map ? <>
+        <rect width="760" height="460" fill="#dce4d8"/>
+        <g fill="#c3d0bc"><path d="M0 0h225l-39 113H0Z"/><path d="m530 0-49 118 82 54L760 95V0Z"/><path d="M0 310h156l103 150H0Z"/><path d="m555 335 205-28v153H604Z"/></g>
+        <g fill="none" stroke="#f6f5e9" strokeWidth="18"><path d="M-20 196 220 196 331 102H780"/><path d="M153-20v480M430-20v500M655-20v500"/><path d="M-20 344h800"/></g>
+        <g fill="none" stroke="#98ac96" strokeWidth="1.5"><path d="M0 63h760M0 265h760M283 0v460M544 0v460"/></g>
+        <path d="m153 267 67-71 111-94h99v242h225" fill="none" stroke="#345b4d" strokeWidth="5" strokeLinejoin="round"/>
+        {[[153,267],[430,102],[655,344]].map(([x,y],i)=><g key={i}><circle cx={x} cy={y} r="13" fill="#345b4d"/><circle cx={x} cy={y} r="5" fill="#f6f5e9"/></g>)}
+        <g fill="#345b4d" fontFamily="Arial,sans-serif" fontSize="12" letterSpacing="2"><text x="36" y="40">TRANSGIS / SPATIAL ANALYSIS</text><text x="36" y="400">LOCATE</text><text x="302" y="400">CONNECT</text><text x="580" y="400">TRACE SOURCES</text></g>
+        <rect x="482" y="193" width="215" height="78" rx="3" fill="#f6f5e9" stroke="#b6c5b2"/><g fill="#345b4d" fontFamily="Arial,sans-serif"><text x="501" y="221" fontSize="11" letterSpacing="2">SOURCE-LINKED ANSWERS</text><path d="M502 240h67m14 0h32m14 0h46" stroke="#99ae94" strokeWidth="4"/></g>
+      </> : plant ? <>
+        <rect width="760" height="460" fill="#e4e6d9"/>
+        <text x="36" y="40" fill="#4a6045" fontFamily="Arial,sans-serif" fontSize="12" letterSpacing="2">PLANT CROPPER / IMAGE PROCESSING</text>
+        <rect x="61" y="87" width="399" height="286" rx="3" fill="#d0d8c4"/>
+        <g fill="none" stroke="#eef0e6" strokeWidth="1">{[107,153,199,245,291,337,383,429].map(x=><path key={x} d={`M${x} 87v286`}/>)}{[133,179,225,271,317].map(y=><path key={y} d={`M61 ${y}h399`}/>)}</g>
+        <path d="M176 324q63-94 174-136" fill="none" stroke="#526c45" strokeWidth="5"/>
+        <path d="M258 251C143 249 126 164 144 124c90 9 142 53 114 127Z" fill="#73916a"/>
+        <path d="m151 139 107 112" fill="none" stroke="#dbe4ce" strokeWidth="2"/>
+        <g fill="#495d83">{[[307,231,34],[363,249,43],[324,298,30]].map(([x,y,r],i)=><g key={i}><circle cx={x} cy={y} r={r}/><path d={`m${x-9} ${y-12} 8 4 2-8 5 7 8-3-4 9-14 1Z`} fill="#a5b6d1"/></g>)}</g>
+        <path d="M105 150v-27h27m263 0h27v27M105 313v27h27m263 0h27v-27" fill="none" stroke="#486342" strokeWidth="3"/>
+        <g stroke="#8b9d7e" fill="none" strokeWidth="2"><path d="M488 231h38m-9-8 9 8-9 8"/></g>
+        <rect x="553" y="143" width="146" height="167" rx="3" fill="#f3f3e9" stroke="#b9c5ac"/>
+        <path d="M581 267q45-68 82-82" fill="none" stroke="#668455" strokeWidth="3"/><path d="M622 222q-57-10-45-50 50 7 45 50" fill="#73916a"/><circle cx="650" cy="239" r="25" fill="#495d83"/><circle cx="626" cy="267" r="18" fill="#65799b"/>
+        <g fill="#4a6045" fontFamily="Arial,sans-serif" fontSize="12" letterSpacing="2"><text x="61" y="418">ISOLATE PLANT CONTENT</text><text x="553" y="350">REVIEW</text></g>
+      </> : <>
+        <rect width="760" height="460" fill="#1a263d"/>
+        <g fill="#273750"><path d="M0 0h760v1H0Z"/><circle cx="380" cy="245" r="156"/></g>
+        <circle cx="380" cy="245" r="156" fill="none" stroke="#667c9c" strokeDasharray="4 9" strokeOpacity=".6"/>
+        <g fill="none" stroke="#8fa7c8" strokeWidth="2"><path d="m380 245-208-96m208 96 208-96m-208 96-208 95m208-95 208 95"/></g>
+        {[[112,111],[528,111],[112,303],[528,303]].map(([x,y],i)=><g key={i}><rect x={x} y={y} width="120" height="74" rx="4" fill="#d0dbeb"/><path d={`M${x+24} ${y+25}h72m-72 12h48m-48 12h60`} fill="none" stroke="#677fa0" strokeWidth="3"/></g>)}
+        <rect x="304" y="183" width="152" height="124" rx="5" fill="#a1b9dd"/>
+        <path d="m380 207 28 12v26c0 19-14 32-28 42-14-10-28-23-28-42v-26Z" fill="none" stroke="#263c60" strokeWidth="3"/><path d="m366 245 10 10 21-23" fill="none" stroke="#263c60" strokeWidth="3"/>
+        <g fill="#ccd8ec" fontFamily="Arial,sans-serif" fontSize="12" letterSpacing="2"><text x="36" y="40">FEDGUARD / FEDERATED LEARNING</text><text x="36" y="400">LOCAL TRAINING</text><text x="506" y="400">SHARED AGGREGATION</text></g>
+      </>}
+    </svg>
+  </div>;
 }
 
 const generatedProjects: Record<string, { src: string; name: string; tone: string }> = {
@@ -37,16 +67,9 @@ const generatedProjects: Record<string, { src: string; name: string; tone: strin
 };
 
 function GeneratedProjectArtwork({ projectId }: { projectId: string }) {
-  const ref = useArtworkVisibility();
   const art = generatedProjects[projectId];
-  return <div ref={ref} className={`generated-project-art generated-tone-${art.tone} concept-art spatial-illustration`} role="img" aria-label={`AI-generated conceptual ${art.name}`} data-project-art={projectId}>
-    <div className="spatial-camera"><div className="spatial-pointer"><div className="spatial-world">
-      <div className="generated-ground"/>
-      <div className="generated-shadow"/>
-      <div className="generated-subject-depth"><div className="generated-subject-float"><img src={art.src} width="800" height="800" alt="" loading="lazy" decoding="async"/></div></div>
-      <div className="generated-orbit"/>
-      <div className="generated-accent"><i/><i/><i/></div>
-    </div></div></div>
+  return <div className={`plain-project-art plain-tone-${art.tone}`} data-project-art={projectId}>
+    <img src={art.src} width="800" height="800" alt={`AI-generated conceptual ${art.name}`} loading="lazy" decoding="async"/>
   </div>;
 }
 
@@ -59,14 +82,9 @@ export function ProjectArtwork({ projectId, kind }: { projectId: string; kind: V
 
 export function OrganizationArtwork({ organization }: { organization: 'ifas' | 'vit-ap' }) {
   const ifas = organization === 'ifas';
-  const ref = useArtworkVisibility();
-  return <div ref={ref} className={`organization-art organization-art-${organization} concept-art spatial-illustration`} role="img" aria-label={ifas?'UF IFAS logo floating above conceptual blueberry artwork; not laboratory photography':'VIT-AP logo floating above conceptual event artwork; not an actual campus building'}>
-    <div className="spatial-camera"><div className="spatial-pointer"><div className="spatial-world">
-      <div className="organization-image-plane"><img src={ifas?ifasArtwork:vitArtwork} width="960" height="960" alt="" loading="lazy" decoding="async"/></div>
-      <div className="organization-halo"/>
-      <div className="organization-logo-depth"><div className="organization-logo-float"><img src={ifas?ifasLogo:vitLogo} alt=""/></div></div>
-      <div className="organization-light-line"/>
-    </div></div></div>
+  return <div className="plain-project-art plain-organization-art">
+    <img className="plain-organization-image" src={ifas?ifasArtwork:vitArtwork} width="960" height="960" alt={ifas?'Conceptual blueberry artwork, not laboratory photography':'Conceptual event artwork, not an actual campus building'} loading="lazy" decoding="async"/>
+    <div className="plain-organization-logo"><img src={ifas?ifasLogo:vitLogo} alt={ifas?'UF IFAS':'VIT-AP University'}/></div>
   </div>;
 }
 

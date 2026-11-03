@@ -11,7 +11,7 @@ export function spatialPointerPose(x: number, y: number) {
 // Pointer transforms have their own wrapper, so they never overwrite scroll poses.
 // Resolve targets on each event: gallery tabs replace the artwork in place.
 export function bindSpatialPointer(root: HTMLElement) {
-  const selector = '.work-art, .project-slide-art, .experience-scene-stack';
+  const selector = '.experience-scene-stack';
   const hosts = root.matches(selector) ? [root] : Array.from(root.querySelectorAll<HTMLElement>(selector));
   const tweens = new Map<Element, { x: ReturnType<typeof gsap.quickTo>; y: ReturnType<typeof gsap.quickTo> }>();
   const move = (event: PointerEvent) => {
@@ -40,43 +40,9 @@ export function bindSpatialPointer(root: HTMLElement) {
   };
 }
 
-// Chapter panels keep normal scrolling; only their visual depth follows progress.
+// Project artwork remains flat and static; gallery scrolling is native.
 export function useWorkGalleryMotion() {
-  const ref = useRef<HTMLElement>(null);
-  useLayoutEffect(() => {
-    const root = ref.current;
-    if (!root) return;
-    const media = gsap.matchMedia();
-    const context = gsap.context(() => {
-      media.add({ motion: '(prefers-reduced-motion: no-preference)', desktop: '(min-width: 900px)' }, ({ conditions }) => {
-        if (!conditions?.motion) return;
-        const desktop = conditions.desktop;
-        const releasePointer = desktop && matchMedia('(hover: hover) and (pointer: fine)').matches ? bindSpatialPointer(root) : () => {};
-        root.querySelectorAll<HTMLElement>('.project-slide').forEach((slide, index) => {
-          const art = slide.querySelector('.project-slide-art');
-          gsap.fromTo(art, { y: desktop ? 75 : 20, rotation: desktop ? (index % 2 ? 5 : -5) : 0, scale: .94 }, {
-            y: desktop ? -45 : -12, rotation: desktop ? (index % 2 ? -2 : 2) : 0, scale: 1.02, ease: 'none',
-            scrollTrigger: { id: `gallery-depth-${index}`, trigger: slide, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
-          });
-          gsap.fromTo(slide.querySelector('.project-landscape'), { yPercent: -8, scale: 1.08 }, {
-            yPercent: 8, scale: 1, ease: 'none',
-            scrollTrigger: { trigger: slide, start: 'top bottom', end: 'bottom top', scrub: true },
-          });
-          gsap.fromTo(slide.querySelector('.project-slide-copy'), { y: desktop ? 42 : 16 }, {
-            y: 0, ease: 'none', scrollTrigger: { trigger: slide, start: 'top 85%', end: 'top 15%', scrub: true },
-          });
-          // The panel survives project-tab changes; new art inherits its camera.
-          gsap.fromTo(art, { rotationX: desktop ? 12 : 3, rotationY: desktop ? -18 : -4, transformPerspective: 1100 }, {
-            rotationX: desktop ? -5 : 0, rotationY: desktop ? 10 : 3, ease: 'none',
-            scrollTrigger: { id: `gallery-camera-${index}`, trigger: slide, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
-          });
-        });
-        return releasePointer;
-      });
-    }, root);
-    return () => { media.revert(); context.revert(); };
-  }, []);
-  return ref;
+  return useRef<HTMLElement>(null);
 }
 
 // Normal document flow: each composition follows the reader, without extra pins.
@@ -90,23 +56,8 @@ export function usePageMotion() {
       media.add({ motion: '(prefers-reduced-motion: no-preference)', desktop: '(min-width: 900px)' }, ({ conditions }) => {
         if (!conditions?.motion) return;
         const desktop = conditions.desktop;
-        const releasePointer = desktop && matchMedia('(hover: hover) and (pointer: fine)').matches ? bindSpatialPointer(root) : () => {};
         const distance = desktop ? 72 : 24;
-        root.querySelectorAll<HTMLElement>('.work-item').forEach((item, index) => {
-          const art = item.querySelector<HTMLElement>('.work-art')!;
-          const diagram = art.querySelector<HTMLElement>('.concept-art')!;
-          gsap.fromTo(art, { y: distance, rotationX: desktop ? 12 : 0, rotationY: desktop ? (index % 2 ? -12 : 12) : 0, scale: .95 }, {
-            y: 0, rotationX: 0, rotationY: 0, scale: 1, ease: 'none',
-            scrollTrigger: { id: `work-enter-${index}`, trigger: item, start: 'top bottom', end: 'top 32%', scrub: true, invalidateOnRefresh: true },
-          });
-          gsap.fromTo(diagram, { y: desktop ? 28 : 10, scale: 1.08, rotation: index % 2 ? -2 : 2 }, {
-            y: desktop ? -28 : -10, scale: 1, rotation: 0, ease: 'none',
-            scrollTrigger: { id: `work-depth-${index}`, trigger: art, start: 'top bottom', end: 'bottom top', scrub: true },
-          });
-          gsap.fromTo(art.querySelector('.spatial-camera'), { rotationX: desktop ? 10 : 3, rotationY: desktop ? -16 : -4 }, {
-            rotationX: desktop ? -5 : 0, rotationY: desktop ? 12 : 3, ease: 'none',
-            scrollTrigger: { id: `work-camera-${index}`, trigger: art, start: 'top bottom', end: 'bottom top', scrub: true, invalidateOnRefresh: true },
-          });
+        root.querySelectorAll<HTMLElement>('.work-item').forEach((item) => {
           gsap.fromTo(item.querySelector('.work-reveal-line'), { scaleX: 0 }, {
             scaleX: 1, ease: 'none', scrollTrigger: { trigger: item, start: 'top 85%', end: 'top 25%', scrub: true },
           });
@@ -124,7 +75,6 @@ export function usePageMotion() {
             y: 0, ease: 'none', scrollTrigger: { trigger: element, start: 'top bottom', end: 'top 60%', scrub: true },
           });
         });
-        return releasePointer;
       });
     }, root);
     return () => { media.revert(); context.revert(); };

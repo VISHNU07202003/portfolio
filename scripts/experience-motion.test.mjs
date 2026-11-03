@@ -115,6 +115,16 @@ test('pointer interaction handles replaced gallery art, touch, hidden documents 
 
 const visual={};runInNewContext(ts.transpileModule(readFileSync(new URL('../app/src/Visual.tsx',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX}}).outputText,{exports:visual,require:id=>/\.(jpg|png|webp)$/.test(id)?{default:id}:require(id)});
 const React=require('react'),{renderToStaticMarkup}=require('react-dom/server');
+
+test('homepage Selected Work uses static flat vector illustrations without generated images or depth wrappers',()=>{
+ for(const projectId of ['transgis','fedguard','plant-cropper']){
+  const markup=renderToStaticMarkup(React.createElement(visual.SelectedWorkArtwork,{projectId}));
+  assert.match(markup,/selected-flat-art/);
+  assert.match(markup,/<svg[^>]+role="img"/);
+  assert.match(markup,/Flat /);
+  assert.doesNotMatch(markup,/<img|spatial-camera|spatial-pointer|translateZ|data-layer/);
+ }
+});
 test('each experience keeps exactly five independently addressable surfaces inside its camera',()=>{
  for(const kind of ['optum','samsung','yahoo','lab','events','android']){
   const markup=renderToStaticMarkup(React.createElement(visual.default,{kind}));
@@ -135,7 +145,7 @@ test('selected-work sculptures have three depth planes and collision-free SVG gr
 test('organization artwork keeps official logos separate from generated conceptual backdrops',()=>{
  for(const organization of ['ifas','vit-ap']){
   const markup=renderToStaticMarkup(React.createElement(visual.OrganizationArtwork,{organization}));
-  assert.match(markup,/class="organization-logo-depth"/);assert.match(markup,/class="organization-logo-float"/);
+  assert.match(markup,/class="plain-organization-logo"/);assert.doesNotMatch(markup,/spatial-camera|spatial-pointer|float/);
   assert.match(markup,/loading="lazy"/);
   assert.ok(markup.includes(organization==='ifas'?'uf-ifas-logo.png':'vit-ap-logo.png'));
   assert.ok(markup.includes(organization==='ifas'?'ifas-blueberry-concept.jpg':'vit-campus-concept.jpg'));
@@ -143,12 +153,12 @@ test('organization artwork keeps official logos separate from generated conceptu
  }
 });
 
-test('every Work project resolves to its matching generated scene and preserves organization boundaries',()=>{
+test('every Work project resolves to a flat static image and preserves organization boundaries',()=>{
  const cases={'transgis':'transgis','reddit-clone':'reddit','zara-replica':'zara','fedguard':'fedguard','yelp-analysis':'yelp','covid-19':'covid','snack-squad':'snack'};
  for(const [projectId,file]of Object.entries(cases)){
   const markup=renderToStaticMarkup(React.createElement(visual.ProjectArtwork,{projectId,kind:'map'}));
   assert.ok(markup.includes(`${file}-project-concept.webp`));assert.ok(markup.includes(`data-project-art="${projectId}"`));
-  assert.match(markup,/generated-ground/);assert.match(markup,/generated-subject-depth/);assert.match(markup,/loading="lazy"/);
+  assert.match(markup,/plain-project-art/);assert.doesNotMatch(markup,/generated-ground|generated-subject-depth|spatial-camera|spatial-pointer/);assert.match(markup,/loading="lazy"/);
   assert.ok(!markup.includes('uf-ifas-logo.png'));
  }
  for(const projectId of ['cell-counter','plant-cropper'])assert.match(renderToStaticMarkup(React.createElement(visual.ProjectArtwork,{projectId,kind:'plant'})),/uf-ifas-logo.png/);

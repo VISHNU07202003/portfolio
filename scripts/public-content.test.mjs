@@ -3,6 +3,17 @@ import assert from 'node:assert/strict';
 import { loadPublicModule } from './load-public-module.mjs';
 const content=loadPublicModule('publicContent').default;
 
+test('current resume dates and industry background stay consistent across About, Experience and Manu',()=>{
+ assert.match(content.profile.introduction,/backend services, Android applications and applied AI/);
+ for(const company of ['Optum','Samsung','Yahoo!'])assert.ok(content.profile.bio.includes(company));
+ const uf=content.experiences.find(s=>s.id==='uf');
+ assert.equal(uf.dates,'Feb 2026–Sep 2026');
+ assert.match(uf.summary,/^I developed/);
+ assert.match(content.answers.find(a=>a.id==='uf').body,/worked.*February to September 2026/);
+ assert.doesNotMatch(content.answers.find(a=>a.id==='uf').body,/works as|currently/);
+ for(const tool of ['Java','Kotlin','Snowflake','TensorFlow','Terraform'])assert.ok(content.profile.skills.some(s=>s.items.includes(tool)));
+});
+
 test('six experiences prioritize the three supplied industry roles and preserve existing cases',()=>{
  assert.deepEqual(Array.from(content.projects,p=>p.id),['cell-counter','snack-squad','transgis','fedguard','campus-events','plant-cropper']);
  assert.deepEqual(Array.from(content.projects.filter(p=>p.featured),p=>p.id),['transgis','fedguard','plant-cropper']);
