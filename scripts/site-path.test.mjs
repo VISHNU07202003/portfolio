@@ -24,7 +24,8 @@ test('case-study returns preserve homepage flow and explicit gallery entry',()=>
   assert.equal(exports.caseStudyReturn(id,true,'work').href,`/work/#${id}`);
  }
  for(const id of ['cell-counter','campus-events','snack-squad']){
-  assert.equal(exports.caseStudyReturn(id,false,null).href,'/#experience');
+  const anchors={'cell-counter':'uf','campus-events':'campus-events','snack-squad':'android-experience'};
+  assert.equal(exports.caseStudyReturn(id,false,null).href,`/#${anchors[id]}`);
   assert.equal(exports.caseStudyReturn(id,false,'work').href,`/work/#${id}`);
  }
  assert.equal(exports.caseStudyReturn('transgis',true,'unexpected').href,'/#work');

@@ -1,5 +1,6 @@
 import { sitePath } from './sitePath';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import { createBlackHole } from './blackHole';
 
 const reducedQuery = '(prefers-reduced-motion: reduce)';
 export function useReducedMotion() {
@@ -16,13 +17,15 @@ export function shouldShowIntro() {
   try { return sessionStorage.getItem('portfolio:intro-seen') !== '1'; }
   catch { return false; } // Storage unavailable: fail open to the portfolio.
 }
-export function useHeroMotion() {
+export function useHeroMotion(obscured = false) {
   const ref = useRef<HTMLDivElement>(null);
   const reduced = useReducedMotion();
   const [paused, setPaused] = useState(false);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+    const canvas = el.querySelector<HTMLCanvasElement>('.hero-blackhole-canvas');
+    const atmosphere = canvas ? createBlackHole(canvas) : null;
     let frame = 0;
     let visible = false;
     let pointerX = 0, pointerY = 0;
@@ -34,8 +37,10 @@ export function useHeroMotion() {
     };
     const render = () => {
       frame = 0;
-      const running = visible && !document.hidden && !reduced && !paused;
+      const running = visible && !el.inert && !document.hidden && !reduced && !paused && !obscured;
       el.dataset.motion = running ? 'running' : 'paused';
+      atmosphere?.setRunning(running);
+      atmosphere?.setPointer(pointerX, pointerY);
       if (!running) { reset(); return; }
       const travel = Math.min(1, Math.max(0, -el.getBoundingClientRect().top / el.offsetHeight));
       const mobile = innerWidth <= 700;
@@ -58,14 +63,15 @@ export function useHeroMotion() {
     el.addEventListener('pointerleave', leave);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
-    document.addEventListener('visibilitychange', schedule);
+    const visibility = () => { if (document.hidden) { atmosphere?.setRunning(false); el.dataset.motion = 'paused'; } schedule(); };
+    document.addEventListener('visibilitychange', visibility);
     schedule();
     return () => {
-      observer.disconnect(); cancelAnimationFrame(frame); reset();
+      observer.disconnect(); cancelAnimationFrame(frame); atmosphere?.dispose(); reset();
       el.removeEventListener('pointermove', move); el.removeEventListener('pointerleave', leave);
       window.removeEventListener('scroll', schedule); window.removeEventListener('resize', schedule);
-      document.removeEventListener('visibilitychange', schedule);
+      document.removeEventListener('visibilitychange', visibility);
     };
-  }, [paused, reduced]);
+  }, [paused, reduced, obscured]);
   return { ref, reduced, paused, toggle: () => setPaused(value => !value) };
 }

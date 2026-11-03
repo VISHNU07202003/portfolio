@@ -19,6 +19,9 @@ export function answerManu(question: string): ManuAnswer {
   if (/\bplant cropper\b/.test(q)) return answers.plant;
   if (/\b(depgraph|road damage|potholes?|cropper)\b/.test(q)) return answers.unknown;
   if (/\b(uf|ifas|laboratory|lab|blueberry|cell counter)\b/.test(q)) return answers.uf;
+  if (/\boptum\b/.test(q)) return answers.optum;
+  if (/\bsamsung\b/.test(q)) return answers.samsung;
+  if (/\byahoo\b/.test(q)) return answers.yahoo;
   if (/\b(android|smartinternz|snack squad|externship)\b/.test(q)) return answers.android;
   if (/\b(transgis|transportation|spatial|geospatial)\b/.test(q)) return answers.transgis;
   if (/\b(fedguard|federated|fedavg|fedprox|opacus)\b/.test(q)) return answers.fedguard;

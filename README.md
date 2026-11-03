@@ -2,6 +2,14 @@
 
 Animated React/TypeScript portfolio with GSAP transitions, six case studies and a local prepared-answer Manu assistant. Prepared for GitHub Pages under `/portfolio/`.
 
+## Spatial artwork and motion
+
+Work uses generated conceptual images with preserved transparency, floating subjects, separate shadows/ground planes, smooth pointer tilt and scroll camera depth. Project tabs select matching imagery. The generated garment and Reddit-themed sculpture are project illustrations, not official product photographs or logo assets. Images load lazily and idle animation pauses offscreen or when the document is hidden. Exact asset hashes remain enforced by privacy/publication audits.
+
+Experience uses one pinned, reversible six-chapter sequence: Optum, Samsung, Yahoo!, UF IFAS, VIT-AP and SmartInternz. Five independent surfaces retain depth in composed states. The industry chapters use text-only company-name tiles. Existing conceptual SVG illustrations remain available for case-study covers. Mobile uses shallower perspective and a sequential reading layout; reduced motion keeps the artwork still. Pointer and scroll transforms use separate wrappers, and pointer listeners/tweens are disposed on media changes and unmount. These are conceptual illustrations, not application screenshots, laboratory imagery or Blender-rendered models. No additional runtime library is required.
+
+The hero handoff keeps its scroll distance as the chapter count changes. Case-study return links restore the matching Experience chapter or explicit Work-gallery entry. Numerical performance claims from private source material remain excluded. Source publication and website deployment are separate actions; fresh rendered-browser review of the current motion is still pending.
+
 ## Develop and verify
 
 Requires Node.js 24.
@@ -20,7 +28,11 @@ PORTFOLIO_BASE=/portfolio/ npm run build:pages
 
 The hero navigation's Work link opens a separate gallery with organization-themed chapters for UF/IFAS, University of Florida, VIT-AP and SmartInternz. Only Cell Counter and Plant Cropper belong to UF/IFAS; TransGIS and the other UF projects appear in the university chapter. Accessible project tabs switch approved summaries and conceptual illustrations. Six existing case studies remain available; four additional repository-backed studies link to their source repositories. Native scrolling drives visual depth without scroll hijacking. Mobile panels stack naturally and reduced motion disables choreography. The original homepage flow, three Selected Work cards and Experience stage remain intact. Case-study returns preserve whether the visitor came from the gallery or the homepage.
 
-Organization logos are original files from UF/IFAS Branding, VIT-AP's official website and SmartInternz's official website. The owner confirmed permission for their use. Source and release audits verify their exact hashes; other imagery remains excluded.
+Organization logos are original files from UF/IFAS Branding, VIT-AP's official website and SmartInternz's official website. The owner confirmed permission for their use. Source and release audits verify their exact hashes and the exact generated-artwork derivatives; unrelated images remain excluded.
+
+## Hero atmosphere
+
+The hero uses original procedural WebGL artwork with a perspective accretion disk and stylized light-bending halo. It is an artistic effect, not a scientific simulation. No external textures, video assets, 3D libraries or services are required. Rendering targets 30 fps on desktop and 24 fps on mobile, with drawing-buffer budgets of 360,000 and 160,000 pixels respectively; these are caps, not measured frame-rate guarantees. The loop pauses during the intro, after the Experience handoff, when offscreen/hidden, or when motion is paused. Reduced motion keeps a still pose, and CSS artwork remains available if WebGL is unavailable or its context is lost.
 
 ## GitHub activity
 

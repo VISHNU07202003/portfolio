@@ -15,5 +15,7 @@ export function sitePath(pathname: string) {
 
 export function caseStudyReturn(id: string, featured: boolean, source: string | null) {
   if (source === 'work') return { href: `/work/#${id}`, label: '← Work gallery' };
-  return featured ? { href: '/#work', label: '← Selected work' } : { href: '/#experience', label: '← Experience' };
+  if (featured) return { href: '/#work', label: '← Selected work' };
+  const chapter: Record<string, string> = { 'cell-counter': 'uf', 'campus-events': 'campus-events', 'snack-squad': 'android-experience' };
+  return { href: chapter[id] ? `/#${chapter[id]}` : '/#experience', label: '← Experience' };
 }

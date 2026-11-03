@@ -31,3 +31,31 @@ test('three chapter controls select composed states and copy switches at each tr
  assert.equal(exports.chapterState(1,3).active,2);
 });
 test.after(()=>gsap.ticker.sleep());
+
+test('six chapters retain the hero handoff distance and resolve every direct anchor',()=>{
+ const ids=['optum-experience','samsung-experience','yahoo-experience','uf','campus-events','android-experience'];
+ const pacing=exports.scenePacing(ids.length),old=exports.scenePacing(3);
+ assert.ok(Math.abs(pacing.screens*pacing.handoff-old.screens*old.handoff)<1e-9);
+ assert.ok(Math.abs(old.handoff-.28)<1e-9);
+ assert.equal(exports.sceneAnchorProgress('#experience',ids,pacing.handoff),pacing.handoff);
+ assert.equal(exports.sceneAnchorProgress('#work',ids,pacing.handoff),null);
+ for(let index=0;index<ids.length;index++){
+  const scene=exports.sceneAnchorProgress(`#${ids[index]}`,ids,pacing.handoff);
+  assert.equal(exports.chapterState(exports.experienceProgress(scene,pacing.handoff),ids.length).active,index);
+ }
+ for(let segment=0;segment<5;segment++){
+  assert.equal(exports.chapterState((segment+.48)/5,6).active,segment);
+  assert.equal(exports.chapterState((segment+.52)/5,6).active,segment+1);
+ }
+});
+
+test('six-chapter handoff and full layer sequence remain reversible at the normalized split',()=>{
+ const hero=Object.assign(target(),{querySelector:()=>target()});const parts=new Map();
+ const experience={querySelector:key=>{if(!parts.has(key))parts.set(key,target());return parts.get(key);}};
+ const sample={progress:0},layers=gsap.timeline({paused:true}).to(sample,{progress:1,duration:5,ease:'none'});
+ const {handoff}=exports.scenePacing(6),scene=exports.buildSceneTimeline(hero,experience,layers,handoff);
+ scene.progress(handoff);assert.equal(sample.progress,0);assert.equal(hero.opacity,0);
+ scene.progress(1);assert.equal(sample.progress,1);
+ scene.progress(0);assert.equal(hero.opacity,1);assert.equal(parts.get('.experience-scene-stack').opacity,0);
+ scene.kill();
+});

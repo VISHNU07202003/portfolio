@@ -6,13 +6,14 @@ import content from './publicContent';
 import Visual from './Visual';
 import type { Story } from './types';
 import { buildExperienceSequence } from './experienceTimeline';
-import { buildSceneTimeline, chapterProgress, chapterState, experienceProgress, EXPERIENCE_START } from './sceneTimeline';
+import { bindSpatialPointer } from './pageMotion';
+import { buildSceneTimeline, chapterProgress, chapterState, experienceProgress, scenePacing, sceneAnchorProgress } from './sceneTimeline';
 
 gsap.registerPlugin(ScrollTrigger);
 
 function StoryCopy({ story, index }: { story: Story; index: number }) {
   return <div className="experience-copy">
-    <div className="chapter-meta"><span>0{index + 1} / {story.organization}</span><span>{story.title}</span>{story.dates&&<span className="experience-dates">{story.dates}</span>}{story.classification&&<span>{story.classification}</span>}</div>
+    <div className="chapter-meta"><span>0{index + 1} / {story.organization}</span><span>{story.title}</span>{story.dates&&<span className="experience-dates">{story.dates}</span>}{story.classification&&<span>{story.classification}</span>}{story.location&&<span>{story.location}</span>}</div>
     <h3>{story.heading.split('\n').map(line => <span key={line}>{line}<br/></span>)}</h3>
     <p>{story.summary}</p>{story.tags.length>0&&<div className="tags flex flex-wrap gap-2">{story.tags.map(tag => <span key={tag}>{tag}</span>)}</div>}
     {story.caseStudy&&<a className="text-link" href={siteHref(`/work/${story.caseStudy}/`)}>Explore the case study <span aria-hidden="true">↗</span></a>}
@@ -23,6 +24,7 @@ export default function Experience() {
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const [reading, setReading] = useState(false);
   const stories = content.experiences;
+  const pacing = scenePacing(stories.length);
   useLayoutEffect(() => {
     const root = rootRef.current;
     if (!root || stories.length < 2 || reading) return;
@@ -41,16 +43,18 @@ export default function Experience() {
         root.classList.add('is-enhanced');
         sequence.classList.add('has-cinematic-stage');
         const rotations = layers.map(group => group.map(layer => Number(gsap.getProperty(layer, 'rotation'))));
-        gsap.set(layers.flat(), { transformPerspective: 900, transformOrigin: '50% 50%' });
-        const layerTimeline = buildExperienceSequence(layers, () => square.clientWidth, rotations);
-        const timeline = buildSceneTimeline(hero, pin, layerTimeline);
+        gsap.set(layers.flat(), { transformPerspective: 0, transformOrigin: '50% 50%' });
+        const cameras = scenes.map(scene => scene.querySelector<HTMLElement>('.spatial-camera')!);
+        const layerTimeline = buildExperienceSequence(layers, () => square.clientWidth, rotations, cameras);
+        const releasePointer = matchMedia('(hover: hover) and (pointer: fine)').matches ? bindSpatialPointer(square) : () => {};
+        const timeline = buildSceneTimeline(hero, pin, layerTimeline, pacing.handoff);
         let currentProgress = 0;
         let stableProgress = 0;
         let measuredWidth = innerWidth;
         let measuredHeight = innerHeight;
         const syncText = () => {
-          const p = experienceProgress(currentProgress);
-          const inHero = currentProgress < .20;
+          const p = experienceProgress(currentProgress, pacing.handoff);
+          const inHero = currentProgress < pacing.handoff * (.20 / .28);
           pin.inert = inHero;
           pin.setAttribute('aria-hidden', String(inHero));
           hero.inert = !inHero;
@@ -79,7 +83,7 @@ export default function Experience() {
         let refreshing = false;
         const trigger = ScrollTrigger.create({
           id: 'experience-transform', trigger: sequence, pin: stage, animation: timeline,
-          start: 'top top', end: () => `+=${Math.max(2000, innerHeight * (3.1 + (stories.length - 2) * 1.9))}`,
+          start: 'top top', end: () => `+=${Math.max(2000, innerHeight * pacing.screens)}`,
           scrub: true, anticipatePin: 1, invalidateOnRefresh: true,
           onUpdate: self => {
             currentProgress = self.progress; syncText();
@@ -108,15 +112,17 @@ export default function Experience() {
         triggerRef.current = trigger;
         const navigateExperience = (event: MouseEvent) => {
           const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
-          if (!target || target.origin !== location.origin || sitePath(target.pathname) !== '/' || !['#experience', '#android-experience'].includes(target.hash) || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          if (!target || target.origin !== location.origin || sitePath(target.pathname) !== '/' || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+          const progress = sceneAnchorProgress(target.hash, stories.map(story => story.id), pacing.handoff);
+          if (progress === null) return;
           event.preventDefault();
           history.pushState(null, '', target.hash);
-          const progress = target.hash === '#android-experience' ? EXPERIENCE_START + (1 - EXPERIENCE_START) * chapterProgress(2, stories.length) : EXPERIENCE_START;
           window.scrollTo({ top: trigger.start + (trigger.end - trigger.start) * progress, behavior: 'smooth' });
         };
         document.addEventListener('click', navigateExperience);
-        const initialAnchor = ['#experience', '#android-experience'].includes(location.hash) ? requestAnimationFrame(() => {
-          window.scrollTo({top:trigger.start + (trigger.end - trigger.start) * (location.hash === '#android-experience' ? EXPERIENCE_START + (1 - EXPERIENCE_START) * chapterProgress(2, stories.length) : EXPERIENCE_START),behavior:'instant'});
+        const initialProgress = sceneAnchorProgress(location.hash, stories.map(story => story.id), pacing.handoff);
+        const initialAnchor = initialProgress !== null ? requestAnimationFrame(() => {
+          window.scrollTo({top:trigger.start + (trigger.end - trigger.start) * initialProgress,behavior:'instant'});
           ScrollTrigger.update();
         }) : null;
         syncText();
@@ -124,6 +130,7 @@ export default function Experience() {
         const onFocusOut = () => queueMicrotask(syncText);
         root.addEventListener('focusout', onFocusOut);
         return () => {
+          releasePointer();
           if (initialAnchor !== null) cancelAnimationFrame(initialAnchor);
           const wasInStage = stableProgress > 0 && stableProgress < 1;
           root.removeEventListener('focusin', syncText); root.removeEventListener('focusout', onFocusOut);
@@ -160,12 +167,12 @@ export default function Experience() {
       });
     }, root);
     return () => { media.revert(); context.revert(); };
-  }, [reading, stories]);
+  }, [reading, stories, pacing.handoff, pacing.screens]);
 
   function chooseChapter(index: number) {
     const trigger = triggerRef.current;
     if (trigger) {
-      window.scrollTo({ top: trigger.start + (trigger.end - trigger.start) * (EXPERIENCE_START + (1 - EXPERIENCE_START) * chapterProgress(index, stories.length)), behavior: 'instant' });
+      window.scrollTo({ top: trigger.start + (trigger.end - trigger.start) * (pacing.handoff + (1 - pacing.handoff) * chapterProgress(index, stories.length)), behavior: 'instant' });
       ScrollTrigger.update();
     }
   }
@@ -177,24 +184,24 @@ export default function Experience() {
       root?.querySelector<HTMLButtonElement>(reading ? '.experience-reading-button' : '.experience-reading-control button')?.focus({ preventScroll: true });
     });
   }
-  return <section ref={rootRef} id="experience" className="experience-section experience-transform" data-reading={reading}>
+  return <section ref={rootRef} id="experience" className="experience-section experience-transform" data-reading={reading} data-chapter-count={stories.length}>
     <h2 className="sr-only">Experience</h2>
     {stories.length >= 2 ? <>
       <div className="experience-pin frame">
         <div className="section-heading"><span className="eyebrow">Experience</span></div>
         <div className="experience-fixed-grid">
           <div className="experience-copy-stack">{stories.map((story, index) => <div className="experience-animated-copy" key={story.id}><StoryCopy story={story} index={index}/></div>)}</div>
-          <div className="experience-scene-stack" aria-hidden="true">{stories.map(story => <div className="experience-scene" key={story.id}><Visual kind={story.kind}/></div>)}<span className="stage-art-caption">Conceptual interface · not a product screenshot</span></div>
+          <div className="experience-scene-stack" aria-hidden="true">{stories.map(story => <div className="experience-scene" key={story.id}><Visual kind={story.kind}/></div>)}<span className="stage-art-caption">Conceptual composition · not a product screenshot</span></div>
         </div>
         <div className="experience-stage-footer">
-          <div className="experience-stage-controls" role="group" aria-label="Experience chapters">{stories.map((story, index) => <button className="experience-chapter-button" key={story.id} aria-pressed={index === 0} onClick={() => chooseChapter(index)}>{index === 0 ? 'UF IFAS' : index === 1 ? 'VIT-AP' : 'SmartInternz'}</button>)}</div>
+          <div className="experience-stage-controls" role="group" aria-label="Experience chapters">{stories.map((story, index) => <button className="experience-chapter-button" key={story.id} aria-pressed={index === 0} onClick={() => chooseChapter(index)}>{story.chapterLabel || story.organization}</button>)}</div>
           <button className="experience-reading-button" onClick={toggleReading}>Read without motion</button><a className="experience-skip" href="#work">Continue to Work ↓</a>
         </div>
         <div className="experience-progress" aria-hidden="true"><span/></div>
       </div>
       <div className="experience-reading frame">
         <div className="section-heading"><span className="eyebrow">01 / EXPERIENCE</span><span className="section-aside">Different contexts. The same curiosity.</span></div>
-        {stories.map((story,index) => <article className="experience-stage" id={story.id === 'android-experience' ? story.id : undefined} key={story.id}><StoryCopy story={story} index={index}/><Visual kind={story.kind}/></article>)}
+        {stories.map((story,index) => <article className="experience-stage" id={story.id} key={story.id}><StoryCopy story={story} index={index}/><Visual kind={story.kind}/></article>)}
         <p className="review-caption">Independent perspectives. A continuing practice.</p>
       </div>
       <div className="experience-reading-control frame"><button onClick={toggleReading} aria-pressed={reading}>{reading?'Enable scroll presentation':'Read without motion'}</button></div>

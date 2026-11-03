@@ -23,6 +23,20 @@ test('official logo allowance is restricted to the exact approved files',()=>fix
  assert.ok(auditSource(dir).some(x=>x.includes('Unapproved')));
  assert.ok(auditBundle(dir).some(x=>x.includes('Unapproved release image')));
 }));
+
+test('generated concept artwork allowance rejects replacements and unrelated images',()=>fixture(dir=>{
+ for(const name of ['ifas-blueberry-concept.jpg','vit-campus-concept.jpg',...['transgis','reddit','zara','fedguard','yelp','covid','snack'].map(id=>`${id}-project-concept.webp`)]){
+  const bytes=readFileSync(new URL(`../app/src/assets/${name}`,import.meta.url));
+  writeFileSync(join(dir,'app/src/assets',name),bytes);writeFileSync(join(dir,'dist/assets',name),bytes);
+ }
+ assert.deepEqual(auditSource(dir),[]);assert.deepEqual(auditBundle(dir),[]);
+ writeFileSync(join(dir,'app/src/assets/ifas-blueberry-concept.jpg'),'replacement');
+ writeFileSync(join(dir,'dist/assets/unapproved-concept.jpg'),'replacement');
+ writeFileSync(join(dir,'app/src/assets/zara-project-concept.webp'),'replacement-webp');
+ writeFileSync(join(dir,'dist/assets/unapproved.webp'),'replacement-webp');
+ assert.ok(auditSource(dir).some(x=>x.includes('Unapproved application file')));
+ assert.ok(auditBundle(dir).some(x=>x.includes('Unapproved release image')));
+}));
 test('allows approved identity, credentials and exact email while rejecting held metrics and other emails',()=>fixture(dir=>{writeFileSync(join(dir,'dist/assets/app.js'),'TransGIS FedGuard VIT-AP University Blueberry Breeding AWS Certified AI Practitioner vishnusaipadyala07@gmail.com');assert.deepEqual(auditBundle(dir),[]);writeFileSync(join(dir,'dist/assets/app.js'),'Accuracy: 98.76% secret@example.org');assert.ok(auditBundle(dir).length>=2);}));
 
 // Publication regressions use isolated copies of the exact release manifest.

@@ -3,14 +3,18 @@ import assert from 'node:assert/strict';
 import { loadPublicModule } from './load-public-module.mjs';
 const content=loadPublicModule('publicContent').default;
 
-test('all three experiences link to approved cases without expanding Selected Work',()=>{
+test('six experiences prioritize the three supplied industry roles and preserve existing cases',()=>{
  assert.deepEqual(Array.from(content.projects,p=>p.id),['cell-counter','snack-squad','transgis','fedguard','campus-events','plant-cropper']);
  assert.deepEqual(Array.from(content.projects.filter(p=>p.featured),p=>p.id),['transgis','fedguard','plant-cropper']);
- assert.equal(content.experiences.length,3);
- assert.deepEqual(Array.from(content.experiences,s=>s.caseStudy),['cell-counter','campus-events','snack-squad']);
- assert.equal(content.experiences[0].organization,'University of Florida – Blueberry Breeding & Genomics Lab');
- assert.equal(content.experiences[0].title,'Machine Learning Engineer Student Assistant');
- assert.equal(content.experiences[1].title,'Software Engineering & UX Research Student Assistant');
+ assert.equal(content.experiences.length,6);
+ assert.deepEqual(Array.from(content.experiences,s=>s.chapterLabel),['Optum','Samsung','Yahoo!','UF IFAS','VIT-AP','SmartInternz']);
+ assert.deepEqual(Array.from(content.experiences.filter(s=>s.caseStudy),s=>s.caseStudy),['cell-counter','campus-events','snack-squad']);
+ assert.equal(content.experiences[3].organization,'University of Florida – Blueberry Breeding & Genomics Lab');
+ assert.equal(content.experiences[3].title,'Machine Learning Engineer Student Assistant');
+ assert.equal(content.experiences[4].title,'Software Engineering & UX Research Student Assistant');
+ assert.deepEqual(Array.from(content.experiences.slice(0,3),s=>[s.title,s.dates,s.location]),[['Software Engineer','Jul 2024–Jun 2025','Hyderabad'],['Software Engineer','Jan 2024–Jun 2024','Hyderabad'],['Software Engineer','Jun 2023–Nov 2023','Bengaluru']]);
+ assert.ok(content.experiences.slice(0,3).every(s=>!s.caseStudy));
+ assert.doesNotMatch(JSON.stringify(content.experiences.slice(0,3)),/\b\d+(?:\.\d+)?x\b|\bFPS\b|\bfull.time\b|\binternship\b|deployed|production|\bpatient\b/i);
  assert.match(content.projects.find(p=>p.id==='campus-events').sections[2].body,/led three student developers, working with a faculty advisor/);
 });
 test('education keeps the masters expected and omits unconfirmed enrollment wording',()=>{
@@ -25,8 +29,8 @@ test('held project claims, metrics and private source paths remain excluded',()=
  assert.doesNotMatch(data,/\.pdf\b|private-documents|career-sources|design-inputs|credential ID|exam score/i);
 });
 
-test('Android is the third animated chapter and retains externship and prototype boundaries',()=>{
- const android=content.experiences[2];
+test('Android is the sixth animated chapter and retains externship and prototype boundaries',()=>{
+ const android=content.experiences[5];
  assert.equal(android.kind,'android');
  assert.equal(android.organization,'SmartInternz');
  assert.equal(android.title,'Software Development Engineer (Android)');
@@ -43,7 +47,7 @@ test('only approved contact values and accurate credential statuses are publishe
  assert.equal(content.certifications[2].status,'Expired');
 });
 test('all public links resolve to published case ids or known section anchors',()=>{
- const sections=new Set(['work','experience','about','education','skills','certifications','contact']);
+ const sections=new Set(['work','experience','about','education','skills','certifications','contact',...content.experiences.map(s=>s.id)]);
  const ids=new Set(content.projects.map(p=>p.id));
  const links=[...content.projects.flatMap(p=>p.links),...content.answers.map(a=>a.link),...content.experiences.filter(s=>s.caseStudy).map(s=>({href:`/work/${s.caseStudy}`}))];
  for(const {href} of links){if(href==='/work/')continue;if(href.startsWith('/work/'))assert.ok(ids.has(href.slice(6)),href);else assert.ok(href.startsWith('/#')&&sections.has(href.slice(2)),href);}

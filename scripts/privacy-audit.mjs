@@ -16,6 +16,19 @@ export const logoAssets=new Map([
  ['app/src/assets/vit-ap-logo.png','ee8f6b2bb7421d7f58e1695036def25401583d18ee38f4cd358aea30746c3fc4'],
  ['app/src/assets/smartinternz-logo.png','d4d27846cc834597820a9655d5b0b5c88a0226fde582c153aac2690d3dfccaa7'],
 ]);
+// Exact generated concept derivatives requested for LOCAL design review.
+// This allowlist is integrity validation, not authorization to publish the site.
+export const conceptArtAssets=new Map([
+ ['app/src/assets/ifas-blueberry-concept.jpg','efcfc2c656d16d492ce0557745f88e944d05f901cbb77a8d2d5c6966f68450de'],
+ ['app/src/assets/vit-campus-concept.jpg','2470d5ebdd25221967499ea77dd24cec82eacf17aea8d0a7ab9542b4d4edbac2'],
+ ['app/src/assets/transgis-project-concept.webp','e1038b3ab1a1143923abfa23d89a9bd38181b7310f8cdf3b9c4351fe9a40a8a5'],
+ ['app/src/assets/reddit-project-concept.webp','7b7b986b879cf1c056267cd37ec7a3c9a16f4feb1f4d940522bb210a89a00287'],
+ ['app/src/assets/zara-project-concept.webp','31ffb2cd30781221461b9f96c0a642e71bd5729f186b8e122baa7a1259e11a7a'],
+ ['app/src/assets/fedguard-project-concept.webp','3ecd685abd3bf2204607c799d5b189780c8ece56cdc37c74d9c78ef84fe8c358'],
+ ['app/src/assets/yelp-project-concept.webp','a34cb472d1bbad29aa3b394569d713eb7bb0c6610321b1a409f15aaf15fbf6d7'],
+ ['app/src/assets/covid-project-concept.webp','a29f87858e8d8fb639cc3de18c35133d663cdeb2ced137a2ea890ce8075a08b8'],
+ ['app/src/assets/snack-project-concept.webp','8fac826401f156d886e3f2154cf776a7257447d25c15b84d6bc3002af92de8eb'],
+]);
 export function auditSource(base=root){
  const problems=[];
  for(const p of walk(resolve(base,'public')))if(relative(resolve(base,'public'),p).replaceAll('\\','/')!=='assets/README.md')problems.push(`Unapproved public file: ${relative(base,p)}`);
@@ -23,7 +36,8 @@ export function auditSource(base=root){
   const rel=relative(base,p).replaceAll('\\','/');
   const approvedManu=(rel==='app/src/assets/manu-approved.png'&&hash(readFileSync(p))===manuHash)||(rel==='app/src/assets/manu-chat-portrait.png'&&hash(readFileSync(p))===manuChatHash);
   const approvedLogo=logoAssets.has(rel)&&hash(readFileSync(p))===logoAssets.get(rel);
-  if(!['.ts','.tsx','.css','.html'].includes(extname(p))&&rel!=='app/src/assets/portrait.jpg'&&!approvedManu&&!approvedLogo)problems.push(`Unapproved application file: ${rel}`);
+  const approvedConcept=conceptArtAssets.has(rel)&&hash(readFileSync(p))===conceptArtAssets.get(rel);
+  if(!['.ts','.tsx','.css','.html'].includes(extname(p))&&rel!=='app/src/assets/portrait.jpg'&&!approvedManu&&!approvedLogo&&!approvedConcept)problems.push(`Unapproved application file: ${rel}`);
   if(['.ts','.tsx','.css','.html'].includes(extname(p))&&/private-documents|design-inputs|career-sources|\.pdf\b|import\.meta\.glob/.test(readFileSync(p,'utf8')))problems.push(`Private source reference: ${rel}`);
  }
  return problems;
@@ -46,10 +60,10 @@ export function auditBundle(base=root){
  ];
  for(const p of walk(dist)){
   const data=readFileSync(p);const ext=extname(p);const rel=relative(dist,p);
-  if(!['.html','.js','.css','.jpg','.png'].includes(ext)&&!['github-activity.json','.nojekyll'].includes(rel))problems.push(`Unexpected release file: ${rel}`);
-  if(ext==='.png'&&![manuHash,manuChatHash,...logoAssets.values()].includes(hash(data)))problems.push(`Unapproved release image: ${rel}`);
+  if(!['.html','.js','.css','.jpg','.png','.webp'].includes(ext)&&!['github-activity.json','.nojekyll'].includes(rel))problems.push(`Unexpected release file: ${rel}`);
+  if(['.png','.webp'].includes(ext)&&![manuHash,manuChatHash,...logoAssets.values(),...conceptArtAssets.values()].includes(hash(data)))problems.push(`Unapproved release image: ${rel}`);
   if(hashes.has(hash(data)))problems.push(`Private source fingerprint found: ${rel}`);
-  if(ext==='.jpg'&&hash(data)!==portraitHash)problems.push(`Unapproved release image: ${rel}`);
+  if(ext==='.jpg'&&hash(data)!==portraitHash&&![...conceptArtAssets.values()].includes(hash(data)))problems.push(`Unapproved release image: ${rel}`);
   if(['.html','.js','.css'].includes(ext)){const text=data.toString();for(const needle of forbidden)if(text.includes(needle))problems.push(`Draft/private marker in ${rel}: ${needle}`);
    // Generic claim patterns avoid publishing actual withheld evaluation values in audit code.
    if(/(?:accuracy|R²|mean absolute error|MAE)\s*[:=]\s*\d+(?:\.\d+)?\s*%?|\b\d+(?:\.\d+)?\s+(?:reference masks|cells per sample|tools assessed)\b/i.test(text))problems.push(`Unapproved numerical evaluation in ${rel}`);

@@ -44,15 +44,33 @@ const content: PortfolioContent = {
     ],
   },
   experiences: [
-    { id: 'uf', organization: 'University of Florida – Blueberry Breeding & Genomics Lab', title: 'Machine Learning Engineer Student Assistant', heading: 'A closer look.\nA clearer picture.', summary: 'I develop microscopy analysis and review workflows with Flask, OpenCV and a Cellpose code path, incorporating researcher feedback into annotation correction and exports.', tags: ['Python', 'Flask', 'OpenCV', 'Cellpose'], kind: 'lab', caseStudy: 'cell-counter' },
     {
-      id: 'campus-events', organization: 'VIT-AP University', title: 'Software Engineering & UX Research Student Assistant', dates: 'Jan 2024–Jun 2025',
+      id: 'optum-experience', organization: 'Optum', chapterLabel: 'Optum', location: 'Hyderabad', title: 'Software Engineer', dates: 'Jul 2024–Jun 2025', classification: 'Industry experience',
+      heading: 'Data pipelines.\nClearer workflows.',
+      summary: 'I developed Python/SQL ETL pipelines for healthcare claims data in Snowflake, Java/Spring Boot APIs for claims exceptions and payment adjustments, and Terraform configurations for Azure infrastructure.',
+      tags: ['Python / SQL', 'Snowflake', 'Java / Spring Boot', 'Terraform / Azure'], kind: 'optum',
+    },
+    {
+      id: 'samsung-experience', organization: 'Samsung', chapterLabel: 'Samsung', location: 'Hyderabad', title: 'Software Engineer', dates: 'Jan 2024–Jun 2024', classification: 'Industry experience',
+      heading: 'Camera systems.\nNew perspectives.',
+      summary: 'I built Kotlin/Java Camera2 test applications to validate Camera Lite SDK features, worked on a NeRF prototype, and prototyped low-light video denoising with Python, TensorFlow and Keras.',
+      tags: ['Kotlin / Java', 'Camera2', 'NeRF', 'TensorFlow / Keras'], kind: 'samsung',
+    },
+    {
+      id: 'yahoo-experience', organization: 'Yahoo!', chapterLabel: 'Yahoo!', location: 'Bengaluru', title: 'Software Engineer', dates: 'Jun 2023–Nov 2023', classification: 'Industry experience',
+      heading: 'Inbox details.\nThoughtful interfaces.',
+      summary: 'I worked on stale-notification cleanup and AI-assisted email drafting in Yahoo Mail for Android, and built writing-assistant UI using Kotlin, Android Jetpack, Flux/MVVM and OpenAI APIs.',
+      tags: ['Kotlin', 'Android Jetpack', 'Flux / MVVM', 'OpenAI APIs'], kind: 'yahoo',
+    },
+    { id: 'uf', organization: 'University of Florida – Blueberry Breeding & Genomics Lab', chapterLabel: 'UF IFAS', title: 'Machine Learning Engineer Student Assistant', heading: 'A closer look.\nA clearer picture.', summary: 'I develop microscopy analysis and review workflows with Flask, OpenCV and a Cellpose code path, incorporating researcher feedback into annotation correction and exports.', tags: ['Python', 'Flask', 'OpenCV', 'Cellpose'], kind: 'lab', caseStudy: 'cell-counter' },
+    {
+      id: 'campus-events', organization: 'VIT-AP University', chapterLabel: 'VIT-AP', title: 'Software Engineering & UX Research Student Assistant', dates: 'Jan 2024–Jun 2025',
       heading: 'One campus.\nMore possibilities.',
       summary: 'A Django/React campus-event application, shaped by student feedback and built with three student developers under faculty supervision.',
       tags: ['Django', 'React', 'Full-stack development', 'UX research'], kind: 'events', caseStudy: 'campus-events',
     },
     {
-      id: 'android-experience', organization: 'SmartInternz', title: 'Software Development Engineer (Android)',
+      id: 'android-experience', organization: 'SmartInternz', chapterLabel: 'SmartInternz', title: 'Software Development Engineer (Android)',
       classification: 'Android Application Development externship', dates: 'Aug 2023–Nov 2023',
       heading: 'Android.\nBuilt together.',
       summary: 'I worked in a three-member team on Snack Squad, an Android ordering prototype built with Kotlin, Jetpack Compose and Firebase. My work included authentication, catalog browsing, cart management and order placement.',
@@ -76,7 +94,7 @@ const content: PortfolioContent = {
         { title: 'Results and limitations', body: 'The application brings batch processing, annotated views, correction and export into a researcher-facing workflow. This case makes no numerical accuracy, time-saving, adoption-scale, deployment or scientific-discovery claim. Researchers remain responsible for reviewing the output.' },
         { title: 'A visual guide', body: 'The cover is an original conceptual image-analysis interface showing analysis and review. It is not a product screenshot or actual microscopy data. Private laboratory images, internal datasets and evaluation artifacts are excluded.' },
       ],
-      links: [{ label: 'Return to Experience', href: '/#experience' }],
+      links: [{ label: 'Return to Experience', href: '/#uf' }],
     },
     {
       id: 'snack-squad', name: 'Snack Squad', category: 'Android development', classification: 'Externship team prototype', featured: false, kind: 'android',
@@ -94,7 +112,7 @@ const content: PortfolioContent = {
         { title: 'Results and limitations', body: 'The team developed an Android ordering prototype covering authentication, catalog, cart and order placement. No audience size, revenue, ongoing use, production deployment or measured performance improvement is claimed. A mock recommendation interface is not presented as a trained AI system.' },
         { title: 'A visual guide', body: 'The cover is an original five-layer illustration of a phone, catalog, account access, cart and order flow. Its labels explain the project concept; it is not a screenshot of the application or proof of a deployed service.' },
       ],
-      links: [{ label: 'Return to Experience', href: '/#experience' }],
+      links: [{ label: 'Return to Experience', href: '/#android-experience' }],
     },
     {
       id: 'transgis', name: 'TransGIS', category: 'Geospatial AI', classification: 'Research prototype', featured: true, kind: 'map',
@@ -148,7 +166,7 @@ const content: PortfolioContent = {
         { title: 'Results and limitations', body: 'The work brought event requests, discovery and feedback-driven iteration into a shared application. This case describes development work and the product’s intended workflows; it makes no claim about launch, current university use, audience size, public access or measured usability improvement.' },
         { title: 'A visual guide', body: 'The cover is a conceptual campus-event interface, not a product screenshot. Its dashboard, calendar and event elements communicate the application’s subject without reproducing student records or claiming to show deployed screens.' },
       ],
-      links: [{ label: 'Return to Experience', href: '/#experience' }],
+      links: [{ label: 'Return to Experience', href: '/#campus-events' }],
     },
     {
       id: 'plant-cropper', name: 'Plant Cropper', category: 'Image processing', classification: 'Research workflow', featured: true, kind: 'plant',
@@ -164,6 +182,9 @@ const content: PortfolioContent = {
     },
   ],
   answers: [
+    { id: 'optum', title: 'Engineering at Optum', body: 'Vishnu worked as a Software Engineer at Optum in Hyderabad from July 2024 to June 2025. His work covered Python/SQL ETL for healthcare claims data in Snowflake, Java/Spring Boot APIs, and Terraform configurations for Azure infrastructure.', link: { label: 'Explore Optum experience', href: '/#optum-experience' } },
+    { id: 'samsung', title: 'Engineering at Samsung', body: 'Vishnu worked as a Software Engineer at Samsung in Hyderabad from January to June 2024. He built Camera2 test applications and worked on NeRF and low-light video-denoising prototypes. No numerical performance claims are presented.', link: { label: 'Explore Samsung experience', href: '/#samsung-experience' } },
+    { id: 'yahoo', title: 'Android engineering at Yahoo!', body: 'Vishnu worked as a Software Engineer at Yahoo! in Bengaluru from June to November 2023. His work included notification cleanup, AI-assisted email drafting and writing-assistant UI in Yahoo Mail for Android.', link: { label: 'Explore Yahoo! experience', href: '/#yahoo-experience' } },
     { id: 'uf', title: 'Image analysis at UF', body: 'At the University of Florida’s Blueberry Breeding & Genomics Lab, Vishnu works as a Machine Learning Engineer Student Assistant. The Cell Counter case study describes Flask image-analysis workflows, OpenCV and a Cellpose code path, researcher review, annotation correction and exports. No numerical evaluation is published.', link: { label: 'Explore Cell Counter', href: '/work/cell-counter' } },
     { id: 'android', title: 'Android development at SmartInternz', body: 'During the August–November 2023 Android development externship, Vishnu worked in a three-member team on Snack Squad. The Kotlin, Jetpack Compose and Firebase prototype covers authentication, catalog browsing, cart management and order placement.', link: { label: 'Explore Snack Squad', href: '/work/snack-squad' } },
     { id: 'plant', title: 'Plant Cropper', body: 'Plant Cropper is an image-processing workflow for background removal and ripe-berry filtering. Scientist feedback informed the workflow; no numerical evaluation or production deployment claim is presented.', link: { label: 'Explore Plant Cropper', href: '/work/plant-cropper' } },

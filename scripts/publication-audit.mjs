@@ -3,11 +3,12 @@ import { resolve, relative, extname } from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { walk, auditSource, logoAssets } from './privacy-audit.mjs';
+import { walk, auditSource, logoAssets, conceptArtAssets } from './privacy-audit.mjs';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const assets = new Map([
  ...logoAssets,
+ ...conceptArtAssets,
  ['app/src/assets/portrait.jpg', '6ce56d40b85044ef8a9d57989af5afc0aebf52cd7156455365f0e585e826c26b'],
  ['app/src/assets/manu-approved.png', '4f3ff6214f2cbcbac376f2aad058d56acdf08e67c098d062b4579aeb9dd94b57'],
  ['app/src/assets/manu-chat-portrait.png', 'cef5544f34700590c002a03e7f0df4b4e6679aa032cfff2449124a424429d23a'],
@@ -24,7 +25,7 @@ export function auditPublication(base = root, strict = false) {
   if (!existsSync(full)) { problems.push(`Missing publication file: ${path}`); continue; }
   const data = readFileSync(full);
   if (assets.has(path) && createHash('sha256').update(data).digest('hex') !== assets.get(path)) problems.push(`Changed approved artwork: ${path}`);
-  if (['.png', '.jpg'].includes(extname(path)) && !assets.has(path)) problems.push(`Unapproved artwork: ${path}`);
+  if (['.png', '.jpg', '.webp'].includes(extname(path)) && !assets.has(path)) problems.push(`Unapproved artwork: ${path}`);
   if (/AKIA[0-9A-Z]{16}|gh[pousr]_[A-Za-z0-9_]{20,}|-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/.test(data.toString())) problems.push(`Potential credential: ${path}`);
  }
  for (const dir of ['app', 'api', 'server', 'scripts']) for (const full of walk(resolve(base, dir))) {

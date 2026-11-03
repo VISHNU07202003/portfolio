@@ -8,6 +8,9 @@ export const scatterPoses = [
   { x: .08, y: .12, z: 40, rotation: 4, rotationX: -4, rotationY: 3, scale: .98 },
   { x: -.10, y: .13, z: 55, rotation: -5, rotationX: 4, rotationY: -4, scale: 1.02 },
 ];
+// Composed surfaces retain depth instead of collapsing back into one flat plane.
+export const composedDepths = [0, 48, 80, 64, 96];
+const surfaceTilt = [0, -4, 6, -3, 8];
 export function buildExperienceTimeline(outgoing: gsap.TweenTarget[], incoming: gsap.TweenTarget[], size: () => number, rotations: number[][]) {
   const timeline = gsap.timeline({ paused: true });
   timeline.to({}, { duration: 1 }, 0); // Explicit holds at both ends.
@@ -36,24 +39,31 @@ export function buildExperienceTimeline(outgoing: gsap.TweenTarget[], incoming: 
 
 // Middle chapters finish assembling before becoming the outgoing chapter.
 // Later pairs must not render their initial poses while the first pair is playing.
-export function buildExperienceSequence(groups: gsap.TweenTarget[][], size: () => number, rotations: number[][]) {
+export function buildExperienceSequence(groups: gsap.TweenTarget[][], size: () => number, rotations: number[][], cameras: gsap.TweenTarget[] = []) {
   const sequence = gsap.timeline({ paused: true });
   groups.slice(1).forEach(group => gsap.set(group, { opacity: 0 }));
   sequence.to({}, { duration: groups.length - 1 }, 0);
+  cameras.forEach((camera, index) => {
+    const start = Math.max(0, index - .65);
+    const end = Math.min(groups.length - 1, index + .65);
+    sequence.fromTo(camera, { rotationX: 8, rotationY: -16 }, {
+      rotationX: -6, rotationY: 9, duration: end - start, ease: 'none',
+    }, start);
+  });
   for (let chapter = 0; chapter < groups.length - 1; chapter++) {
     scatterPoses.forEach((pose, index) => {
-      const base = { x: 0, y: 0, z: 0, rotationX: 0, rotationY: 0, scale: 1 };
+      const base = { x: 0, y: 0, z: composedDepths[index], rotationX: surfaceTilt[index], rotationY: 0, scale: 1 };
       sequence.fromTo(groups[chapter][index], { ...base, rotation: rotations[chapter][index] }, {
-        x: () => pose.x * size(), y: () => pose.y * size(), z: pose.z,
-        rotation: rotations[chapter][index] + pose.rotation, rotationX: pose.rotationX, rotationY: pose.rotationY,
+        x: () => pose.x * size() * 1.25, y: () => pose.y * size() * 1.25, z: composedDepths[index] + pose.z * 1.5,
+        rotation: rotations[chapter][index] + pose.rotation, rotationX: pose.rotationX * 2, rotationY: pose.rotationY * 2.5,
         scale: pose.scale, duration: .30, ease: 'power2.inOut', immediateRender: chapter === 0,
       }, chapter + .16 + index * .012);
       sequence.fromTo(groups[chapter][index], { opacity: 1 }, { opacity: 0, duration: .20, ease: 'none', immediateRender: false }, chapter + .40 + index * .012);
       // One explicit transform tween makes early/late/reversed seeks identical.
       // Splitting initialization and assembly can retain stale poses after a seek.
       sequence.fromTo(groups[chapter + 1][index], {
-        x: () => -pose.x * size() * .85, y: () => pose.y * size() * .85, z: pose.z,
-        rotation: rotations[chapter + 1][index] - pose.rotation, rotationX: -pose.rotationX, rotationY: -pose.rotationY,
+        x: () => -pose.x * size(), y: () => pose.y * size(), z: composedDepths[index] + pose.z * 1.5,
+        rotation: rotations[chapter + 1][index] - pose.rotation, rotationX: -pose.rotationX * 2, rotationY: -pose.rotationY * 2.5,
         scale: pose.scale, opacity: 0,
       }, { ...base, rotation: rotations[chapter + 1][index], opacity: 1, duration: .46, ease: 'power2.out', immediateRender: false }, chapter + .35 + index * .012);
     });
