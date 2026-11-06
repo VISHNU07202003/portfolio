@@ -1,4 +1,4 @@
-export type VisualKind = 'lab' | 'events' | 'android' | 'federated' | 'map' | 'plant' | 'community' | 'commerce' | 'analytics' | 'covid' | 'optum' | 'samsung' | 'yahoo';
+export type VisualKind = 'lab' | 'events' | 'android' | 'federated' | 'map' | 'plant' | 'community' | 'commerce' | 'analytics' | 'covid';
 export interface PublicLink { label: string; href: string; }
 export interface Story { id: string; organization: string; chapterLabel?: string; location?: string; title: string; dates?: string; classification?: string; heading: string; summary: string; tags: string[]; kind: VisualKind; caseStudy?: string; }
 export interface Project { id: string; name: string; category: string; classification: string; heading: string; summary: string; featured: boolean; kind: VisualKind; sections: { title: string; body: string }[]; links: PublicLink[]; }

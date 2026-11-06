@@ -8,9 +8,9 @@ Work uses flat, static conceptual images, without pointer tilt, floating subject
 
 The homepage Selected Work cards use original flat SVG illustrations: a source-linked map for TransGIS, a node diagram for FedGuard, and a leaf/berry crop graphic for Plant Cropper. These static illustrations are separate from the Work gallery imagery and contain no laboratory data or measured results.
 
-Experience retains one pinned, reversible six-chapter sequence: Optum, Samsung, Yahoo!, UF IFAS, VIT-AP and SmartInternz. The industry chapters use text-only company-name tiles. Five independently animated surfaces preserve the approved scatter/assembly transitions. Mobile and reduced motion retain a sequential reading layout. The hero atmosphere is unchanged.
+Experience retains one pinned, reversible three-chapter sequence: UF IFAS, VIT-AP and SmartInternz. Five independently animated surfaces preserve the approved scatter/assembly transitions. Mobile and reduced motion retain a sequential reading layout. The hero atmosphere is unchanged.
 
-Public About, skills and Manu summaries include the supplied industry experience. UF lab work is dated February–September 2026, matching the current supplied résumé. The M.S. remains expected in May 2027. Numerical results, GPA, additional credentials and publication claims remain withheld pending explicit content approval.
+Public About, skills and Manu summaries describe approved academic, research and externship work. UF lab work is dated February–September 2026, matching the current supplied résumé. The M.S. remains expected in May 2027. Numerical results, GPA, additional credentials and publication claims remain withheld pending explicit content approval.
 
 ## Develop and verify
 

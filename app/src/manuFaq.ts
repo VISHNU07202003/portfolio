@@ -13,15 +13,13 @@ export const suggestions = ['What is TransGIS?', 'What is FedGuard?', 'What are 
 export const greeting: ManuAnswer = { id: 'hello', title: 'Hi, I’m Manu.', body: 'A little curiosity is a good place to start. Pick a question below, or ask me where to go.', link: { label: 'Explore Work', href: '/#work' } };
 export function answerManu(question: string): ManuAnswer {
   const q = question.trim().toLowerCase().slice(0, 300);
+  if (/\b(optum|samsung|yahoo)\b/.test(q)) return answers.unknown;
   // Withheld topics and unsupported results take precedence over broad navigation aliases.
   if (/\b(salary|gpa|credentials?|resume|cv|address|metrics?|accuracy|score|revenue|customers?|clients?|audience|users?|participants?|launch(?:ed)?|deployment|deployed|production|present|current|today|now)\b/.test(q) || /how (many|much)|still used|ongoing use/.test(q)) return answers.unknown;
   if (/\b(certifications?|certificates?|aws|azure|coursera)\b/.test(q)) return answers.certifications;
   if (/\bplant cropper\b/.test(q)) return answers.plant;
   if (/\b(depgraph|road damage|potholes?|cropper)\b/.test(q)) return answers.unknown;
   if (/\b(uf|ifas|laboratory|lab|blueberry|cell counter)\b/.test(q)) return answers.uf;
-  if (/\boptum\b/.test(q)) return answers.optum;
-  if (/\bsamsung\b/.test(q)) return answers.samsung;
-  if (/\byahoo\b/.test(q)) return answers.yahoo;
   if (/\b(android|smartinternz|snack squad|externship)\b/.test(q)) return answers.android;
   if (/\b(transgis|transportation|spatial|geospatial)\b/.test(q)) return answers.transgis;
   if (/\b(fedguard|federated|fedavg|fedprox|opacus)\b/.test(q)) return answers.fedguard;

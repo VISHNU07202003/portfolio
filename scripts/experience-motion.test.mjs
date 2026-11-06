@@ -126,7 +126,7 @@ test('homepage Selected Work uses static flat vector illustrations without gener
  }
 });
 test('each experience keeps exactly five independently addressable surfaces inside its camera',()=>{
- for(const kind of ['optum','samsung','yahoo','lab','events','android']){
+ for(const kind of ['lab','events','android']){
   const markup=renderToStaticMarkup(React.createElement(visual.default,{kind}));
   assert.deepEqual([...markup.matchAll(/data-layer="([^"]+)"/g)].map(m=>m[1]),['shell','primary','inspector','results','context']);
   assert.match(markup,/class="spatial-camera"><div class="spatial-pointer"><div class="spatial-world">/);
@@ -163,12 +163,4 @@ test('every Work project resolves to a flat static image and preserves organizat
  }
  for(const projectId of ['cell-counter','plant-cropper'])assert.match(renderToStaticMarkup(React.createElement(visual.ProjectArtwork,{projectId,kind:'plant'})),/uf-ifas-logo.png/);
  assert.match(renderToStaticMarkup(React.createElement(visual.ProjectArtwork,{projectId:'campus-events',kind:'events'})),/vit-ap-logo.png/);
-});
-
-test('industry artwork renders text tiles rather than image logos',()=>{
- for(const [kind,name]of [['optum','optum'],['samsung','SAMSUNG'],['yahoo','yahoo!']]){
-  const markup=renderToStaticMarkup(React.createElement(visual.default,{kind}));
-  assert.match(markup,/industry-name-tile/);assert.ok(markup.includes(`<span>${name}</span>`));
-  assert.doesNotMatch(markup,/<img\b/);assert.match(markup,/company name rendered as text/);
- }
 });

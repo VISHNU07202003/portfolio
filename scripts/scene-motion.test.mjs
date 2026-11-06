@@ -33,7 +33,7 @@ test('three chapter controls select composed states and copy switches at each tr
 test.after(()=>gsap.ticker.sleep());
 
 test('six chapters retain the hero handoff distance and resolve every direct anchor',()=>{
- const ids=['optum-experience','samsung-experience','yahoo-experience','uf','campus-events','android-experience'];
+ const ids=['chapter-a','chapter-b','chapter-c','uf','campus-events','android-experience'];
  const pacing=exports.scenePacing(ids.length),old=exports.scenePacing(3);
  assert.ok(Math.abs(pacing.screens*pacing.handoff-old.screens*old.handoff)<1e-9);
  assert.ok(Math.abs(old.handoff-.28)<1e-9);

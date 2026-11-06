@@ -180,22 +180,7 @@ function SecondarySculpture({kind}:{kind:VisualKind}) {
     </svg>
   </>;
 }
-function IndustryVisual({kind,compact}:{kind:'optum'|'samsung'|'yahoo';compact:boolean}) {
-  const config={
-    optum:{name:'optum',focus:'DATA / SERVICES',stack:'PYTHON · SQL',flow:'Validate → Reconcile'},
-    samsung:{name:'SAMSUNG',focus:'CAMERA / VISION',stack:'KOTLIN · JAVA',flow:'Capture → Inspect'},
-    yahoo:{name:'yahoo!',focus:'MAIL / ANDROID',stack:'KOTLIN · JETPACK',flow:'Draft → Refine'},
-  }[kind];
-  return <SpatialFrame kind={kind} compact={compact} layered label={`Five-layer conceptual ${config.name} experience composition, company name rendered as text, not a product screenshot`}>
-    <div className="visual-layer industry-name-tile" data-layer="shell"><span>{config.name}</span></div>
-    <div className="visual-layer industry-motif" data-layer="primary"><svg viewBox="0 0 100 100" fill="none" aria-hidden="true">{kind==='optum'?<><ellipse cx="50" cy="27" rx="27" ry="11"/><path d="M23 27v40c0 15 54 15 54 0V27M23 47c0 15 54 15 54 0"/><path d="m39 66 8 8 15-19"/></>:kind==='samsung'?<><rect x="17" y="25" width="66" height="52" rx="10"/><circle cx="50" cy="51" r="18"/><circle cx="50" cy="51" r="9"/><path d="M27 25l7-9h32l7 9"/></>:<><rect x="14" y="24" width="72" height="52" rx="7"/><path d="m15 29 35 26 35-26M35 60 15 74m50-14 20 14"/></>}</svg></div>
-    <div className="visual-layer industry-stack" data-layer="inspector"><span>{config.stack}</span></div>
-    <div className="visual-layer industry-flow" data-layer="results"><span>{config.flow}</span><span aria-hidden="true">↗</span></div>
-    <div className="visual-layer industry-context" data-layer="context"><span>{config.focus}</span><i aria-hidden="true"/></div>
-  </SpatialFrame>;
-}
 export default function Visual({kind, compact=false}:{kind:VisualKind;compact?:boolean}) {
-  if(kind==='optum'||kind==='samsung'||kind==='yahoo')return <IndustryVisual kind={kind} compact={compact}/>;
   const lab=kind==='lab', event=kind==='events';
   if(kind==='map'||kind==='federated'||kind==='plant')return <SpatialFrame kind={kind} compact={compact} label={`Original dimensional ${kind==='map'?'spatial network':kind==='plant'?'leaf and berry inspection':'federated server network'} illustration, not a product screenshot, research data or measured results`}><ProjectSculpture kind={kind}/></SpatialFrame>;
   if (['community','commerce','analytics','covid'].includes(kind)) return <SpatialFrame kind={kind} compact={compact} label={`Conceptual ${kind==='community'?'actor and message':kind==='commerce'?'storefront':'data visualization'} diagram, not an application screenshot or measured data`}>

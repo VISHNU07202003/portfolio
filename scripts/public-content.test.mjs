@@ -3,29 +3,14 @@ import assert from 'node:assert/strict';
 import { loadPublicModule } from './load-public-module.mjs';
 const content=loadPublicModule('publicContent').default;
 
-test('current resume dates and industry background stay consistent across About, Experience and Manu',()=>{
- assert.match(content.profile.introduction,/backend services, Android applications and applied AI/);
- for(const company of ['Optum','Samsung','Yahoo!'])assert.ok(content.profile.bio.includes(company));
- const uf=content.experiences.find(s=>s.id==='uf');
- assert.equal(uf.dates,'Feb 2026–Sep 2026');
- assert.match(uf.summary,/^I developed/);
- assert.match(content.answers.find(a=>a.id==='uf').body,/worked.*February to September 2026/);
- assert.doesNotMatch(content.answers.find(a=>a.id==='uf').body,/works as|currently/);
- for(const tool of ['Java','Kotlin','Snowflake','TensorFlow','Terraform'])assert.ok(content.profile.skills.some(s=>s.items.includes(tool)));
-});
-
-test('six experiences prioritize the three supplied industry roles and preserve existing cases',()=>{
+test('all three experiences link to approved cases without expanding Selected Work',()=>{
  assert.deepEqual(Array.from(content.projects,p=>p.id),['cell-counter','snack-squad','transgis','fedguard','campus-events','plant-cropper']);
  assert.deepEqual(Array.from(content.projects.filter(p=>p.featured),p=>p.id),['transgis','fedguard','plant-cropper']);
- assert.equal(content.experiences.length,6);
- assert.deepEqual(Array.from(content.experiences,s=>s.chapterLabel),['Optum','Samsung','Yahoo!','UF IFAS','VIT-AP','SmartInternz']);
- assert.deepEqual(Array.from(content.experiences.filter(s=>s.caseStudy),s=>s.caseStudy),['cell-counter','campus-events','snack-squad']);
- assert.equal(content.experiences[3].organization,'University of Florida – Blueberry Breeding & Genomics Lab');
- assert.equal(content.experiences[3].title,'Machine Learning Engineer Student Assistant');
- assert.equal(content.experiences[4].title,'Software Engineering & UX Research Student Assistant');
- assert.deepEqual(Array.from(content.experiences.slice(0,3),s=>[s.title,s.dates,s.location]),[['Software Engineer','Jul 2024–Jun 2025','Hyderabad'],['Software Engineer','Jan 2024–Jun 2024','Hyderabad'],['Software Engineer','Jun 2023–Nov 2023','Bengaluru']]);
- assert.ok(content.experiences.slice(0,3).every(s=>!s.caseStudy));
- assert.doesNotMatch(JSON.stringify(content.experiences.slice(0,3)),/\b\d+(?:\.\d+)?x\b|\bFPS\b|\bfull.time\b|\binternship\b|deployed|production|\bpatient\b/i);
+ assert.equal(content.experiences.length,3);
+ assert.deepEqual(Array.from(content.experiences,s=>s.caseStudy),['cell-counter','campus-events','snack-squad']);
+ assert.equal(content.experiences[0].organization,'University of Florida – Blueberry Breeding & Genomics Lab');
+ assert.equal(content.experiences[0].title,'Machine Learning Engineer Student Assistant');
+ assert.equal(content.experiences[1].title,'Software Engineering & UX Research Student Assistant');
  assert.match(content.projects.find(p=>p.id==='campus-events').sections[2].body,/led three student developers, working with a faculty advisor/);
 });
 test('education keeps the masters expected and omits unconfirmed enrollment wording',()=>{
@@ -40,8 +25,8 @@ test('held project claims, metrics and private source paths remain excluded',()=
  assert.doesNotMatch(data,/\.pdf\b|private-documents|career-sources|design-inputs|credential ID|exam score/i);
 });
 
-test('Android is the sixth animated chapter and retains externship and prototype boundaries',()=>{
- const android=content.experiences[5];
+test('Android is the third animated chapter and retains externship and prototype boundaries',()=>{
+ const android=content.experiences[2];
  assert.equal(android.kind,'android');
  assert.equal(android.organization,'SmartInternz');
  assert.equal(android.title,'Software Development Engineer (Android)');
@@ -77,4 +62,12 @@ test('Work chapters use the requested order and only approved project records',(
  assert.equal(content.additionalWork.length,4);
  assert.ok(content.additionalWork.every(p=>p.repository.startsWith('https://github.com/VISHNU07202003/')));
  assert.doesNotMatch(JSON.stringify(content.additionalWork),/\d+(?:\.\d+)?\s*%|\d+\+\s*(users|reviews|businesses)|production.ready/i);
+});
+
+test('only academic experiences and answers are published, with corrected UF dates',()=>{
+ assert.deepEqual(Array.from(content.experiences,s=>s.chapterLabel),['UF IFAS','VIT-AP','SmartInternz']);
+ assert.doesNotMatch(JSON.stringify(content),/optum|samsung|yahoo|industry|Snowflake|Terraform|NeRF|Sybase/i);
+ assert.equal(content.experiences[0].dates,'Feb 2026–Sep 2026');
+ assert.match(content.experiences[0].summary,/^I developed/);
+ assert.match(content.answers.find(a=>a.id==='uf').body,/February to September 2026/);
 });
